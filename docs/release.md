@@ -39,16 +39,33 @@ uv build
 
 ## TestPyPI Dry Run
 
+Configure a TestPyPI trusted publisher first:
+
+- PyPI project name: `fluxy-ign`
+- Owner: `Bobby-Miller`
+- Repository: `Fluxy`
+- Workflow: `publish.yml`
+- Environment: `testpypi`
+
+Then run the `Publish Fluxy` GitHub Actions workflow manually with target `testpypi`.
+
+After it publishes, install from TestPyPI:
+
 ```bash
-uv publish --publish-url https://test.pypi.org/legacy/
 uv tool install --index-url https://test.pypi.org/simple/ --default-index https://pypi.org/simple/ fluxy-ign
 fluxy-deploy-webdev --help
 ```
 
 ## PyPI Publish
 
-```bash
-uv publish
-```
+Configure a PyPI trusted publisher before the first release:
 
-Use a scoped PyPI API token rather than username/password authentication.
+- PyPI project name: `fluxy-ign`
+- Owner: `Bobby-Miller`
+- Repository: `Fluxy`
+- Workflow: `publish.yml`
+- Environment: `pypi`
+
+Publish by creating a GitHub release, or run the `Publish Fluxy` workflow manually with target `pypi`.
+
+The workflow uses GitHub OIDC trusted publishing, so no PyPI token is stored in GitHub secrets.
