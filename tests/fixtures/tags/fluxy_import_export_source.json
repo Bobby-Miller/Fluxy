@@ -1,0 +1,38 @@
+{
+  "name": "FluxyImportExportSentinelFolder",
+  "tagType": "Folder",
+  "tags": [
+    {
+      "dataType": "String",
+      "defaultValue": "fluxy-import-export-sentinel-string",
+      "name": "FluxyImportExportSentinel_String_91B7",
+      "tagType": "AtomicTag",
+      "value": "fluxy-import-export-sentinel-string",
+      "valueSource": "memory"
+    },
+    {
+      "dataType": "Boolean",
+      "defaultValue": false,
+      "name": "FluxyImportExportSentinel_Boolean_42C9",
+      "tagType": "AtomicTag",
+      "value": false,
+      "valueSource": "memory"
+    },
+    {
+      "dataType": "Int4",
+      "defaultValue": 1,
+      "name": "FluxyImportExportSentinel_Integer_73D1",
+      "tagType": "AtomicTag",
+      "value": 1,
+      "valueSource": "memory"
+    },
+    {
+      "dataType": "Float4",
+      "defaultValue": 1.5,
+      "name": "FluxyImportExportSentinel_Float_28A6",
+      "tagType": "AtomicTag",
+      "value": 1.5,
+      "valueSource": "memory"
+    }
+  ]
+}

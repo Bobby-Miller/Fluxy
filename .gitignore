@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyright/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Local database/test artifacts
+*.sqlite3
+
+# Exported Ignition project artifacts
+flux_*/
+flux_*.zip
