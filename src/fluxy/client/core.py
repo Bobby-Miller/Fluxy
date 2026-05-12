@@ -12,6 +12,7 @@ from .db import DbClientMixin
 from .device import DeviceClientMixin
 from .historian import HistorianClientMixin
 from .opc import OpcClientMixin
+from .opcua import OpcUaClientMixin
 from .project import ProjectClientMixin
 from .report import ReportClientMixin
 from .tag import TagClientMixin
@@ -42,6 +43,7 @@ class FluxyClient(
     UtilClientMixin,
     AlarmClientMixin,
     OpcClientMixin,
+    OpcUaClientMixin,
     ReportClientMixin,
     UserClientMixin,
 ):
@@ -117,6 +119,8 @@ class FluxyClient(
         opc_read_values_path: str = "/fluxy/opc/readValues",
         opc_write_value_path: str = "/fluxy/opc/writeValue",
         opc_write_values_path: str = "/fluxy/opc/writeValues",
+        opcua_add_connection_path: str = "/fluxy/opcua/addConnection",
+        opcua_remove_connection_path: str = "/fluxy/opcua/removeConnection",
         report_get_names_as_list_path: str = "/fluxy/report/getReportNamesAsList",
         report_get_names_as_dataset_path: str = "/fluxy/report/getReportNamesAsDataset",
         report_execute_report_path: str = "/fluxy/report/executeReport",
@@ -211,6 +215,8 @@ class FluxyClient(
         self.opc_read_values_path = opc_read_values_path
         self.opc_write_value_path = opc_write_value_path
         self.opc_write_values_path = opc_write_values_path
+        self.opcua_add_connection_path = opcua_add_connection_path
+        self.opcua_remove_connection_path = opcua_remove_connection_path
         self.report_get_names_as_list_path = report_get_names_as_list_path
         self.report_get_names_as_dataset_path = report_get_names_as_dataset_path
         self.report_execute_report_path = report_execute_report_path

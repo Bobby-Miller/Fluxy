@@ -62,6 +62,7 @@ class Fluxy:
         self.historian = HistorianNamespace(self)
         self.util = UtilNamespace(self)
         self.opc = OpcNamespace(self)
+        self.opcua = OpcUaNamespace(self)
         self.named_query = NamedQueryNamespace(self)
         self.project = ProjectNamespace(self)
         self.report = ReportNamespace(self)
@@ -861,6 +862,37 @@ class OpcNamespace:
     readValues = read_values
     writeValue = write_value
     writeValues = write_values
+
+
+class OpcUaNamespace:
+    def __init__(self, fluxy: Fluxy) -> None:
+        self._fluxy = fluxy
+
+    def add_connection(
+        self,
+        name: str,
+        description: str,
+        discovery_url: str,
+        endpoint_url: str,
+        security_policy: str = "None",
+        security_mode: str = "None",
+        settings: dict[str, Any] | None = None,
+    ) -> bool:
+        return self._fluxy.client.opcua_add_connection(
+            name,
+            description,
+            discovery_url,
+            endpoint_url,
+            security_policy=security_policy,
+            security_mode=security_mode,
+            settings=settings,
+        )
+
+    def remove_connection(self, name: str) -> bool:
+        return self._fluxy.client.opcua_remove_connection(name)
+
+    addConnection = add_connection
+    removeConnection = remove_connection
 
 
 class NamedQueryNamespace:

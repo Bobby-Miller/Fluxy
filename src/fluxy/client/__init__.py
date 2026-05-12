@@ -9,6 +9,7 @@ from .historian import (
     HistorianMetadata,
 )
 from .opc import OpcClientMixin, OpcValue
+from .opcua import OpcUaClientMixin
 from .project import ProjectClientMixin, RequestScanResult
 from .report import ReportClientMixin, ReportExecutionResult
 from .tag import (
@@ -46,6 +47,7 @@ __all__ = [
     "IgnitionVersion",
     "MoveResult",
     "OpcClientMixin",
+    "OpcUaClientMixin",
     "OpcValue",
     "ProjectClientMixin",
     "QualifiedValue",

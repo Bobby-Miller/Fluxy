@@ -6,7 +6,7 @@ import shutil
 import textwrap
 from pathlib import Path
 
-from . import alarm, db, device, historian, opc, project, report, scripting, tag, user, util
+from . import alarm, db, device, historian, opc, opcua, project, report, scripting, tag, user, util
 
 
 WEBDEV_MODULE = "com.inductiveautomation.webdev"
@@ -109,6 +109,7 @@ RESOURCES = [
     *device.RESOURCES,
     *historian.RESOURCES,
     *opc.RESOURCES,
+    *opcua.RESOURCES,
     *project.RESOURCES,
     *report.RESOURCES,
     *scripting.RESOURCES,

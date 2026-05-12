@@ -9,6 +9,9 @@ from fluxy import FluxyError
 from fluxy.named_query import named_query_parameter
 
 
+pytestmark = pytest.mark.integration
+
+
 def test_add_run_delete_named_query_cycle():
     base_url = os.getenv("FLUXY_BASE_URL", "http://localhost:8088/system/webdev/flux")
     token = os.getenv("FLUXY_TOKEN")
