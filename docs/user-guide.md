@@ -4,6 +4,20 @@ This guide is the user-facing path for using Fluxy against a local Ignition Gate
 
 ## Install
 
+As a project dependency:
+
+```bash
+uv add fluxy-ign
+```
+
+As a standalone deployment tool:
+
+```bash
+uv tool install fluxy-ign
+```
+
+When developing from source:
+
 ```bash
 uv sync
 ```
@@ -13,8 +27,10 @@ uv sync
 Deploy Fluxy-owned WebDev endpoints into the Ignition project filesystem:
 
 ```bash
-uv run python -m fluxy.deploy_webdev ../ignition_flux_project
+fluxy-deploy-webdev ../ignition_flux_project
 ```
+
+From a source checkout, use `uv run fluxy-deploy-webdev ../ignition_flux_project`.
 
 Reload the Ignition project resources:
 
@@ -84,7 +100,7 @@ PY
 Deploy the Gateway database connection resource:
 
 ```bash
-uv run python -m fluxy.gateway_config \
+fluxy-gateway-config \
   /usr/local/bin/ignition/data \
   hello.sqlite3 \
   --connection-name FluxyHello

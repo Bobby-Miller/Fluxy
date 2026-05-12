@@ -1,12 +1,46 @@
 [project]
-name = "fluxy"
+# PyPI distribution name only. The package, import namespace, docs, and CLI remain Fluxy/fluxy.
+name = "fluxy-ign"
 version = "0.1.0"
-description = "Python client that emulates Ignition system.tag readBlocking/writeBlocking via WebDev"
+description = "Python client for controlled Ignition Gateway automation through WebDev"
 readme = "README.md"
 requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Bobby Miller" },
+]
+keywords = ["ignition", "scada", "opc-ua", "webdev", "industrial-automation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Manufacturing",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Monitoring",
+]
 dependencies = [
     "httpx>=0.27",
 ]
+
+[project.optional-dependencies]
+sqlalchemy = ["sqlalchemy>=2.0"]
+
+[project.scripts]
+fluxy-deploy-webdev = "fluxy.deploy_webdev.core:main"
+fluxy-deploy-scripting = "fluxy.deploy_scripting:main"
+fluxy-gateway-config = "fluxy.gateway_config:main"
+
+[project.urls]
+Homepage = "https://github.com/Bobby-Miller/Fluxy"
+Repository = "https://github.com/Bobby-Miller/Fluxy"
+Documentation = "https://github.com/Bobby-Miller/Fluxy/tree/main/docs"
+Issues = "https://github.com/Bobby-Miller/Fluxy/issues"
 
 [dependency-groups]
 dev = [
@@ -22,6 +56,19 @@ sqlalchemy = [
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fluxy"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/fluxy",
+    "tests",
+    "docs",
+    "README.md",
+    "LICENSE",
+    "pyproject.toml",
+]
 
 [tool.ruff]
 line-length = 100

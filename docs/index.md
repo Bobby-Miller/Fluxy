@@ -26,3 +26,4 @@ Ignition-style aliases exist only as porting shims:
 - `gateway-config.md`: Gateway-scoped SQLite database connection deployment.
 - `system-functions-integration-roadmap.md`: recommended `system.*` integrations and required closed-loop tests.
 - `session-compression.md`: closeout summary of current API coverage, boundaries, fixtures, and next ideas.
+- `release.md`: PyPI and `uv tool` release checklist.

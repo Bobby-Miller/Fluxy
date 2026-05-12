@@ -34,11 +34,16 @@ wheels = [
 ]
 
 [[package]]
-name = "fluxy"
+name = "fluxy-ign"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },
+]
+
+[package.optional-dependencies]
+sqlalchemy = [
+    { name = "sqlalchemy" },
 ]
 
 [package.dev-dependencies]
@@ -53,7 +58,11 @@ sqlalchemy = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "httpx", specifier = ">=0.27" }]
+requires-dist = [
+    { name = "httpx", specifier = ">=0.27" },
+    { name = "sqlalchemy", marker = "extra == 'sqlalchemy'", specifier = ">=2.0" },
+]
+provides-extras = ["sqlalchemy"]
 
 [package.metadata.requires-dev]
 dev = [

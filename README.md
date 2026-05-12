@@ -2,6 +2,20 @@
 
 A Python library that emulates useful subsets of Ignition's `system` APIs from outside Ignition.
 
+Install as a library:
+
+```bash
+uv add fluxy-ign
+```
+
+Install as a deployment tool:
+
+```bash
+uv tool install fluxy-ign
+```
+
+The PyPI distribution is `fluxy-ign`; the Python import remains `fluxy`.
+
 Start with `docs/user-guide.md` for the user workflow. See `docs/` for architecture, deployment, API, Gateway config, and integration-test details.
 
 Initial scope:
