@@ -34,6 +34,7 @@ This is the current closeout state for the Fluxy API expansion and stress-testin
   - `String` can return Good store quality but does not query back through `queryRawPoints` in this fixture.
   - `Document` is rejected by `storeDataPoints`.
 - DB mixed-type tests show SQLite BLOB values return byte-value lists, not base64 wrappers.
+- PostgreSQL SQL historian fixture `postgresHist` is covered through store/browse/aggregate query, backfill, aggregate maximum, and datatype-boundary tests. Its direct stored points query back reliably through `queryAggregatedPoints`; `queryRawPoints`, metadata query-back, and annotation query-back do not mirror Core Historian on the current gateway.
 - Tag `Document` values require WebDev serialization through `toDict()`; this was fixed for `readBlocking` and recursive `getConfiguration`.
 
 ## Stress Tests Added
@@ -59,6 +60,7 @@ This is the current closeout state for the Fluxy API expansion and stress-testin
 - DB fixture datasource: `FluxyTestDatasource`.
 - Existing hello DB: `FluxyHello`.
 - Historian provider path prefix: `histprov:Core Historian:/sys:gateway:/prov:default:/tag:FluxyHistorianIntegration`.
+- SQL historian provider path prefix: `histprov:postgresHist:/sys:gateway:/prov:default:/tag:FluxySqlHistorianIntegration`.
 - Audit profile: `Audit`.
 - OPC server: `Ignition OPC UA Server`.
 - User source: `UserDB`/`userDB`.
@@ -66,7 +68,7 @@ This is the current closeout state for the Fluxy API expansion and stress-testin
 
 ## Next Ideas
 
-- PostgreSQL follow-up: deploy and configure a local PostgreSQL instance, add an Ignition datasource for it, then run DB integration tests against PostgreSQL-specific type behavior.
+- PostgreSQL follow-up: keep expanding SQL historian coverage if Ignition exposes raw/metadata/annotation query-back for the provider after configuration changes.
 - More DB edge cases if desired: timestamps from SQL date/time functions, very large result sets, unicode text, negative/unsigned-ish BLOB byte boundaries, generated keys.
 - More tag edge cases if desired: UDTs, alarm config mutation, history-enabled tag configuration, expression/reference tags.
 - Harden transient gateway reload behavior only if repeated failures are reproducible; several isolated 500s were transient and passed on targeted reruns.

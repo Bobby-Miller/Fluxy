@@ -21,7 +21,7 @@ Initial scope:
 - `fx.user` helpers for tested disposable user/role workflows against `userDB`
 - `fx.util` helpers for tested gateway diagnostics and audit write/query workflows
 - `fx.project.request_scan()`
-- `python -m fluxy.gateway_config` for narrow Gateway SQLite connection resource deployment
+- `python -m fluxy.gateway_config` for narrow Gateway SQLite/PostgreSQL connection resource deployment
 - HTTP bridge to Ignition WebDev endpoints that call the real `system.tag`, tested `system.alarm`, `system.db`, tested `system.device`, tested `system.historian`, tested `system.opc`, and tested `system.util` APIs inside the gateway.
 
 Snake_case is canonical for Python code. Ignition-style aliases are available for porting scripts:
