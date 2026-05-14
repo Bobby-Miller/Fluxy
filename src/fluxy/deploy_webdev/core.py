@@ -118,7 +118,12 @@ RESOURCES = [
 ]
 
 
-def deploy(project_path: str | Path, namespace: str = DEFAULT_NAMESPACE, clean: bool = False) -> list[Path]:
+def deploy(
+    project_path: str | Path,
+    namespace: str = DEFAULT_NAMESPACE,
+    clean: bool = False,
+    auth_token: str | None = None,
+) -> list[Path]:
     project_path = Path(project_path).resolve()
     resource_root = project_path / WEBDEV_MODULE / "resources" / namespace
     if clean and resource_root.exists():
@@ -142,8 +147,10 @@ def deploy(project_path: str | Path, namespace: str = DEFAULT_NAMESPACE, clean: 
             "config.json": json.dumps(CONFIG, indent=2) + "\n",
             "doGet.py": 'def doGet(request, session):\n    return {"json": {"ok": True, "resource": "%s"}}\n'
             % resource.get_resource_name,
-            "doPost.py": designer_body(resource.post_script)
-            .replace("__PROJECT_PATH__", str(project_path))
+            "doPost.py": authenticated_script(
+                designer_body(resource.post_script).replace("__PROJECT_PATH__", str(project_path)),
+                auth_token=auth_token,
+            )
             .strip()
             + "\n",
             **STUBS,
@@ -153,6 +160,12 @@ def deploy(project_path: str | Path, namespace: str = DEFAULT_NAMESPACE, clean: 
             path.write_text(content, encoding="utf-8")
             written.append(path)
     return written
+
+
+def authenticated_script(script: str, auth_token: str | None = None) -> str:
+    if not auth_token:
+        return script
+    return script.replace('AUTH_TOKEN = ""', "AUTH_TOKEN = %s" % json.dumps(auth_token), 1)
 
 
 def designer_body(script: str) -> str:
@@ -169,10 +182,25 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("project_path", type=Path)
     parser.add_argument("--namespace", default=DEFAULT_NAMESPACE)
     parser.add_argument("--clean", action="store_true", help="Remove the target namespace before deploying.")
+    parser.add_argument("--auth-token", help="Bearer token required by deployed WebDev resources.")
+    parser.add_argument("--auth-token-file", type=Path, help="File containing the bearer token to deploy.")
     return parser.parse_args()
+
+
+def selected_auth_token(args: argparse.Namespace) -> str | None:
+    if args.auth_token and args.auth_token_file:
+        raise SystemExit("Use either --auth-token or --auth-token-file, not both.")
+    if args.auth_token_file:
+        return args.auth_token_file.read_text(encoding="utf-8").strip()
+    return args.auth_token
 
 
 def main() -> None:
     args = parse_args()
-    written = deploy(args.project_path, namespace=args.namespace, clean=args.clean)
+    written = deploy(
+        args.project_path,
+        namespace=args.namespace,
+        clean=args.clean,
+        auth_token=selected_auth_token(args),
+    )
     print("Deployed %d files under namespace %s" % (len(written), args.namespace))

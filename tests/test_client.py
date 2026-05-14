@@ -56,6 +56,47 @@ def test_read_blocking_posts_tag_paths_and_returns_qualified_values():
     assert values[0].quality == "Good"
 
 
+def test_fluxy_deploy_webdev_passes_auth_token(tmp_path):
+    fx = Fluxy(
+        "https://ignition.example/system/webdev/Fluxy",
+        project_location=tmp_path,
+    )
+
+    fx.deploy_webdev(auth_token="secret-token")
+
+    read_script = (
+        tmp_path
+        / "com.inductiveautomation.webdev"
+        / "resources"
+        / "fluxy"
+        / "tag"
+        / "readBlocking"
+        / "doPost.py"
+    ).read_text()
+    assert 'AUTH_TOKEN = "secret-token"' in read_script
+
+
+def test_fluxy_deploy_webdev_defaults_to_client_token(tmp_path):
+    fx = Fluxy(
+        "https://ignition.example/system/webdev/Fluxy",
+        token="client-token",
+        project_location=tmp_path,
+    )
+
+    fx.deploy_webdev()
+
+    read_script = (
+        tmp_path
+        / "com.inductiveautomation.webdev"
+        / "resources"
+        / "fluxy"
+        / "tag"
+        / "readBlocking"
+        / "doPost.py"
+    ).read_text()
+    assert 'AUTH_TOKEN = "client-token"' in read_script
+
+
 def test_read_blocking_accepts_single_tag_path_string():
     def handler(request):
         assert json.loads(request.content) == {"tagPaths": ["[default]A/B"]}
@@ -73,6 +114,22 @@ def test_read_blocking_accepts_single_tag_path_string():
 
     assert value.tag_path == "[default]A/B"
     assert value.value == 1
+
+
+def test_fluxy_tag_namespace_accepts_timeout_ms_alias():
+    def handler(request):
+        assert json.loads(request.content) == {"tagPaths": ["[default]A/B"], "timeoutMs": 123}
+        return httpx.Response(
+            200,
+            json={"ok": True, "values": [{"tagPath": "[default]A/B", "value": 1, "quality": "Good"}]},
+        )
+
+    fx = Fluxy(
+        "https://ignition.example/system/webdev/Fluxy",
+        http_client=httpx.Client(transport=httpx.MockTransport(handler)),
+    )
+
+    assert fx.tag.read_blocking("[default]A/B", timeout_ms=123).value == 1
 
 
 def test_write_blocking_posts_values_and_returns_quality_codes():

@@ -82,8 +82,20 @@ class Fluxy:
             return self.tag_provider
         return "[%s]" % self.tag_provider
 
-    def deploy_webdev(self, *, namespace: str = "fluxy", clean: bool = False) -> list[Path]:
-        return deploy_webdev_resources(self.require_project_location(), namespace=namespace, clean=clean)
+    def deploy_webdev(
+        self,
+        *,
+        namespace: str = "fluxy",
+        clean: bool = False,
+        auth_token: str | None = None,
+    ) -> list[Path]:
+        selected_auth_token = self.client.token if auth_token is None else auth_token
+        return deploy_webdev_resources(
+            self.require_project_location(),
+            namespace=namespace,
+            clean=clean,
+            auth_token=selected_auth_token,
+        )
 
     def close(self) -> None:
         self.client.close()
@@ -94,28 +106,44 @@ class TagNamespace:
         self._fluxy = fluxy
 
     @overload
-    def read_blocking(self, tag_paths: str, timeout: int | None = None) -> QualifiedValue: ...
+    def read_blocking(
+        self, tag_paths: str, timeout: int | None = None, timeout_ms: int | None = None
+    ) -> QualifiedValue: ...
 
     @overload
-    def read_blocking(self, tag_paths: list[str], timeout: int | None = None) -> list[QualifiedValue]: ...
+    def read_blocking(
+        self, tag_paths: list[str], timeout: int | None = None, timeout_ms: int | None = None
+    ) -> list[QualifiedValue]: ...
 
     def read_blocking(
-        self, tag_paths: str | list[str], timeout: int | None = None
+        self, tag_paths: str | list[str], timeout: int | None = None, timeout_ms: int | None = None
     ) -> QualifiedValue | list[QualifiedValue]:
-        return self._fluxy.client.read_blocking(tag_paths, timeout_ms=timeout)
-
-    @overload
-    def write_blocking(self, tag_paths: str, values: Any, timeout: int | None = None) -> WriteResult: ...
+        selected_timeout = timeout if timeout is not None else timeout_ms
+        return self._fluxy.client.read_blocking(tag_paths, timeout_ms=selected_timeout)
 
     @overload
     def write_blocking(
-        self, tag_paths: list[str], values: list[Any], timeout: int | None = None
+        self, tag_paths: str, values: Any, timeout: int | None = None, timeout_ms: int | None = None
+    ) -> WriteResult: ...
+
+    @overload
+    def write_blocking(
+        self,
+        tag_paths: list[str],
+        values: list[Any],
+        timeout: int | None = None,
+        timeout_ms: int | None = None,
     ) -> list[WriteResult]: ...
 
     def write_blocking(
-        self, tag_paths: str | list[str], values: Any | list[Any], timeout: int | None = None
+        self,
+        tag_paths: str | list[str],
+        values: Any | list[Any],
+        timeout: int | None = None,
+        timeout_ms: int | None = None,
     ) -> WriteResult | list[WriteResult]:
-        return self._fluxy.client.write_blocking(tag_paths, values, timeout_ms=timeout)
+        selected_timeout = timeout if timeout is not None else timeout_ms
+        return self._fluxy.client.write_blocking(tag_paths, values, timeout_ms=selected_timeout)
 
     @overload
     def delete_tags(self, tag_paths: str) -> DeleteResult: ...

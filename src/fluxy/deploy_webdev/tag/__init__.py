@@ -263,11 +263,14 @@ def doPost(request, session):
         handle, temp_path = tempfile.mkstemp(suffix=".json", prefix="fluxy-export-tags-")
         os.close(handle)
         system.tag.exportTags(temp_path, tag_paths, recursive)
-        temp_file = open(temp_path, "r")
         try:
-            raw_json = temp_file.read()
-        finally:
-            temp_file.close()
+            raw_json = system.file.readFileAsString(temp_path)
+        except Exception:
+            temp_file = open(temp_path, "r")
+            try:
+                raw_json = temp_file.read()
+            finally:
+                temp_file.close()
         _log_success(operation)
         return {"json": {"ok": True, "tags": system.util.jsonDecode(raw_json), "rawJson": raw_json}}
     except Exception, exc:

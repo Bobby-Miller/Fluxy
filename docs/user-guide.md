@@ -32,6 +32,14 @@ fluxy-deploy-webdev ../ignition_flux_project
 
 From a source checkout, use `uv run fluxy-deploy-webdev ../ignition_flux_project`.
 
+For a protected bridge, deploy with a bearer token:
+
+```bash
+uv run fluxy-deploy-webdev ../ignition_flux_project --auth-token-file ./fluxy-token
+```
+
+Then pass the same token to clients with `Fluxy(..., token="...")` or `FLUXY_TOKEN` for CLI/MCP workflows.
+
 Reload the Ignition project resources:
 
 ```python
@@ -40,6 +48,18 @@ from fluxy import Fluxy
 fx = Fluxy(base_url="http://localhost:8088/system/webdev/flux")
 fx.project.request_scan()
 ```
+
+## Run MCP Server
+
+Fluxy can expose a local MCP server as an optional adapter over the same Python API:
+
+```bash
+uv run --extra mcp fluxy-mcp \
+  --base-url http://localhost:8088/system/webdev/flux \
+  --token-file ./fluxy-token
+```
+
+The MCP server is read-only by default. Add `--allow-writes` for tag writes/configuration, and `--allow-destructive` for destructive tools such as tag deletion.
 
 ## Use Tags
 

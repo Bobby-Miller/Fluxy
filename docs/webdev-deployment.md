@@ -9,6 +9,25 @@ cd fluxy
 uv run python -m fluxy.deploy_webdev /usr/local/bin/ignition/data/projects/flux
 ```
 
+Deploy with bearer-token auth enabled:
+
+```bash
+uv run python -m fluxy.deploy_webdev \
+  /usr/local/bin/ignition/data/projects/flux \
+  --auth-token-file /path/to/fluxy-token
+```
+
+Clients must pass the same token:
+
+```python
+from fluxy import Fluxy
+
+fx = Fluxy(
+    base_url="http://localhost:8088/system/webdev/flux",
+    token="shared-secret-token",
+)
+```
+
 The deployer writes resources under a dedicated `fluxy/` WebDev namespace:
 
 ```text

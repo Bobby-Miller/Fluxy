@@ -346,3 +346,23 @@ def test_deploy_webdev_writes_namespaced_resources(tmp_path):
 
     resource_json = json.loads((resource_root / "tag" / "readBlocking" / "resource.json").read_text())
     assert "doPost.py" in resource_json["files"]
+
+
+def test_deploy_webdev_can_require_bearer_token(tmp_path):
+    deploy(tmp_path, auth_token="secret-token")
+    resource_root = tmp_path / "com.inductiveautomation.webdev" / "resources" / "fluxy"
+
+    read_script = (resource_root / "tag" / "readBlocking" / "doPost.py").read_text()
+    write_script = (resource_root / "tag" / "writeBlocking" / "doPost.py").read_text()
+
+    assert 'AUTH_TOKEN = "secret-token"' in read_script
+    assert 'AUTH_TOKEN = "secret-token"' in write_script
+
+
+def test_deploy_webdev_escapes_bearer_token(tmp_path):
+    deploy(tmp_path, auth_token='secret"token')
+    resource_root = tmp_path / "com.inductiveautomation.webdev" / "resources" / "fluxy"
+
+    read_script = (resource_root / "tag" / "readBlocking" / "doPost.py").read_text()
+
+    assert 'AUTH_TOKEN = "secret\\"token"' in read_script

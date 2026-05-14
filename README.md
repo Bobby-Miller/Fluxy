@@ -14,6 +14,35 @@ Install as a deployment tool:
 uv tool install fluxy-ign
 ```
 
+Install with MCP support:
+
+```bash
+uv tool install 'fluxy-ign[mcp]'
+```
+
+Authenticated WebDev deployment:
+
+```bash
+fluxy-deploy-webdev /path/to/ignition/data/projects/flux \
+  --auth-token-file /path/to/fluxy-token
+```
+
+Clients must pass the same bearer token:
+
+```python
+fx = Fluxy("http://localhost:8088/system/webdev/flux", token="shared-secret-token")
+```
+
+Run the optional MCP adapter:
+
+```bash
+fluxy-mcp \
+  --base-url http://localhost:8088/system/webdev/flux \
+  --token-file /path/to/fluxy-token
+```
+
+The MCP server is read-only by default. Add `--allow-writes` to expose write/configure tools and `--allow-destructive` to expose destructive tools such as tag deletion.
+
 The PyPI distribution is `fluxy-ign`; the Python import remains `fluxy`.
 
 Start with `docs/user-guide.md` for the user workflow. See `docs/` for architecture, deployment, API, Gateway config, and integration-test details.
@@ -36,6 +65,7 @@ Initial scope:
 - `fx.util` helpers for tested gateway diagnostics and audit write/query workflows
 - `fx.project.request_scan()`
 - `python -m fluxy.gateway_config` for narrow Gateway SQLite/PostgreSQL connection resource deployment
+- `fluxy-mcp` optional MCP server over the Fluxy API, read-only by default
 - HTTP bridge to Ignition WebDev endpoints that call the real `system.tag`, tested `system.alarm`, `system.db`, tested `system.device`, tested `system.historian`, tested `system.opc`, and tested `system.util` APIs inside the gateway.
 
 Snake_case is canonical for Python code. Ignition-style aliases are available for porting scripts:

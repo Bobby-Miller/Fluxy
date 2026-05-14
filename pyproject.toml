@@ -30,12 +30,14 @@ dependencies = [
 
 [project.optional-dependencies]
 sqlalchemy = ["sqlalchemy>=2.0"]
+mcp = ["mcp>=1.0"]
 
 [project.scripts]
 fluxy-deploy-webdev = "fluxy.deploy_webdev.core:main"
 fluxy-deploy-scripting = "fluxy.deploy_scripting:main"
 fluxy-gateway-config = "fluxy.gateway_config:main"
 fluxy-ignition-expression = "fluxy.ignition_expression.cli:main"
+fluxy-mcp = "fluxy.mcp.server:main"
 
 [project.urls]
 Homepage = "https://github.com/Bobby-Miller/Fluxy"
