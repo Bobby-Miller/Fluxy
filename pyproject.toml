@@ -36,6 +36,7 @@ mcp = ["mcp>=1.0"]
 fluxy-deploy-webdev = "fluxy.deploy_webdev.core:main"
 fluxy-deploy-scripting = "fluxy.deploy_scripting:main"
 fluxy-gateway-config = "fluxy.gateway_config:main"
+fluxy-check-ignition-dev = "fluxy.check_ignition_dev:main"
 fluxy-ignition-expression = "fluxy.ignition_expression.cli:main"
 fluxy-mcp = "fluxy.mcp.server:main"
 

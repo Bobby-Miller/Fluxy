@@ -317,19 +317,33 @@ def doPost(request, session):
         if start_date is None:
             return _bad_request("Request must include startDate", _request_debug(request))
         if _is_ignition_83_or_newer():
-            results = system.historian.queryAnnotations(
-                paths,
-                system.date.fromMillis(long(start_date)),
-                system.date.fromMillis(long(end_date)) if end_date is not None else None,
-                allowed_types,
-            )
+            if allowed_types is not None:
+                results = system.historian.queryAnnotations(
+                    paths,
+                    system.date.fromMillis(long(start_date)),
+                    system.date.fromMillis(long(end_date)) if end_date is not None else None,
+                    allowed_types,
+                )
+            else:
+                results = system.historian.queryAnnotations(
+                    paths,
+                    system.date.fromMillis(long(start_date)),
+                    system.date.fromMillis(long(end_date)) if end_date is not None else None,
+                )
         else:
-            results = system.tag.queryAnnotations(
-                paths,
-                system.date.fromMillis(long(start_date)),
-                system.date.fromMillis(long(end_date)) if end_date is not None else None,
-                allowed_types,
-            )
+            if allowed_types is not None:
+                results = system.tag.queryAnnotations(
+                    paths,
+                    system.date.fromMillis(long(start_date)),
+                    system.date.fromMillis(long(end_date)) if end_date is not None else None,
+                    allowed_types,
+                )
+            else:
+                results = system.tag.queryAnnotations(
+                    paths,
+                    system.date.fromMillis(long(start_date)),
+                    system.date.fromMillis(long(end_date)) if end_date is not None else None,
+                )
         annotations = [_annotation_to_wire(annotation) for annotation in results.getResults()]
         _log_success(operation)
         return {"json": {"ok": True, "annotations": annotations, "quality": str(results.getResultQuality())}}
