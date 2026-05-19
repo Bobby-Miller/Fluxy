@@ -17,3 +17,4 @@ build/
 # Exported Ignition project artifacts
 flux_*/
 flux_*.zip
+purewest_offline*.zip

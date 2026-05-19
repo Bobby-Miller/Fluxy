@@ -9,7 +9,11 @@ Base environment:
 ```bash
 cd fluxy
 export FLUXY_BASE_URL="http://localhost:8088/system/webdev/flux"
+# Required when the deployed Fluxy WebDev bridge was protected with --auth-token or --auth-token-file.
+export FLUXY_TOKEN="$(tr -d '\n' < .secrets/fluxy-token)"
 ```
+
+See `auth.md` if you need to create, deploy, or verify the Fluxy bearer token.
 
 Request project scan and verify project context through `getProjectName`/`getProjectNames`:
 

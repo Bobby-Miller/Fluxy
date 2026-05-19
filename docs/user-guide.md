@@ -40,6 +40,8 @@ uv run fluxy-deploy-webdev ../ignition_flux_project --auth-token-file ./fluxy-to
 
 Then pass the same token to clients with `Fluxy(..., token="...")` or `FLUXY_TOKEN` for CLI/MCP workflows.
 
+See `auth.md` for the complete protected-bridge workflow. Fluxy bearer-token auth is separate from Ignition Gateway user login; it protects calls into the deployed Fluxy WebDev endpoints.
+
 Reload the Ignition project resources:
 
 ```python

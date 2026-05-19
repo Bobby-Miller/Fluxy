@@ -28,6 +28,8 @@ fx = Fluxy(
 )
 ```
 
+For the complete auth workflow, including token creation, `FLUXY_TOKEN`, verification, and troubleshooting, see `auth.md`.
+
 The deployer writes resources under a dedicated `fluxy/` WebDev namespace:
 
 ```text

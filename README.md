@@ -33,6 +33,8 @@ Clients must pass the same bearer token:
 fx = Fluxy("http://localhost:8088/system/webdev/flux", token="shared-secret-token")
 ```
 
+See `docs/auth.md` for the full auth workflow, including token creation, project scan, client configuration, and troubleshooting `401`/`403` responses.
+
 Run the optional MCP adapter:
 
 ```bash

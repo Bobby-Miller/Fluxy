@@ -19,6 +19,7 @@ Ignition-style aliases exist only as porting shims:
 ## Docs
 
 - `webdev-deployment.md`: deploy and reload the Ignition WebDev resources.
+- `auth.md`: protect Fluxy WebDev access with a bearer token and verify clients.
 - `api.md`: public Python API.
 - `user-guide.md`: end-to-end user workflow.
 - `architecture.md`: current package layout and responsibilities.
