@@ -413,6 +413,30 @@ def test_get_configuration_posts_path_and_returns_configs():
     assert result == configs
 
 
+def test_get_configuration_posts_paths_and_returns_configs():
+    configs = [
+        {"fullPath": "[default]Configured/A", "name": "A", "historyEnabled": True},
+        {"fullPath": "[default]Configured/B", "name": "B", "historyEnabled": False},
+    ]
+
+    def handler(request):
+        assert request.url.path == "/system/webdev/Fluxy/fluxy/tag/getConfiguration"
+        assert json.loads(request.content) == {
+            "paths": ["[default]Configured/A", "[default]Configured/B"],
+            "recursive": False,
+        }
+        return httpx.Response(200, json={"ok": True, "configs": configs})
+
+    client = FluxyClient(
+        "https://ignition.example/system/webdev/Fluxy",
+        http_client=httpx.Client(transport=httpx.MockTransport(handler)),
+    )
+
+    result = client.get_configuration(["[default]Configured/A", "[default]Configured/B"])
+
+    assert result == configs
+
+
 def test_configure_posts_base_path_tags_and_collision_policy():
     tag_config = {
         "name": "TestTag",
@@ -479,6 +503,29 @@ def test_browse_posts_path_and_filter_and_returns_results():
     assert results[0].full_path == "[default]Folder/MemoryFloat"
     assert results[0].tag_type == "AtomicTag"
     assert results[0].data_type == "Float4"
+
+
+def test_list_paths_returns_browsed_full_paths():
+    def handler(request):
+        assert request.url.path == "/system/webdev/Fluxy/fluxy/tag/browse"
+        assert json.loads(request.content) == {"path": "[default]Folder"}
+        return httpx.Response(
+            200,
+            json={
+                "ok": True,
+                "results": [
+                    {"name": "A", "fullPath": "[default]Folder/A"},
+                    {"name": "NoPath"},
+                ],
+            },
+        )
+
+    client = FluxyClient(
+        "https://ignition.example/system/webdev/Fluxy",
+        http_client=httpx.Client(transport=httpx.MockTransport(handler)),
+    )
+
+    assert client.list_paths("[default]Folder") == ["[default]Folder/A"]
 
 
 def test_query_posts_provider_query_and_returns_results():

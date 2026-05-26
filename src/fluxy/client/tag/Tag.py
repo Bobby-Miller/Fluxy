@@ -163,6 +163,12 @@ class TagTransport(Protocol):
 
     def _post(self, path: str, payload: dict[str, Any]) -> dict[str, Any]: ...
 
+    def browse(
+        self,
+        path: str,
+        tag_filter: dict[str, Any] | None = None,
+    ) -> list[BrowseResult]: ...
+
 
 class TagClientMixin:
     @overload
@@ -337,8 +343,15 @@ class TagClientMixin:
             raise FluxyError("exportTags response missing `tags` or `rawJson`")
         return ExportTagsResult(tags=response["tags"], raw_json=response["rawJson"])
 
-    def get_configuration(self: TagTransport, path: str, recursive: bool = False) -> list[dict[str, Any]]:
-        response = self._post(self.get_configuration_path, {"path": path, "recursive": recursive})
+    def get_configuration(
+        self: TagTransport, path: str | list[str], recursive: bool = False
+    ) -> list[dict[str, Any]]:
+        payload: dict[str, Any] = {"recursive": recursive}
+        if isinstance(path, list):
+            payload["paths"] = path
+        else:
+            payload["path"] = path
+        response = self._post(self.get_configuration_path, payload)
         configs = response.get("configs")
         if not isinstance(configs, list):
             from fluxy.client import FluxyError
@@ -380,6 +393,13 @@ class TagClientMixin:
 
             raise FluxyError("browse response missing `results` list")
         return [BrowseResult.from_payload(result) for result in results]
+
+    def list_paths(
+        self: TagTransport,
+        path: str,
+        tag_filter: dict[str, Any] | None = None,
+    ) -> list[str]:
+        return [result.full_path for result in self.browse(path, tag_filter=tag_filter) if result.full_path]
 
     def query(
         self: TagTransport,

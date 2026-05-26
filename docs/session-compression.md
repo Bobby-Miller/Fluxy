@@ -8,7 +8,7 @@ This is the current closeout state for the Fluxy API expansion and stress-testin
 - MongoDB, Kafka, and OPCUA are intentionally removed from the active roadmap.
 - Direct QuestDB access is intentionally avoided; Core Historian behavior is proven through Ignition APIs.
 - Latest full verification: `uv run pytest -rs` -> `131 passed`.
-- Latest static checks passed: `uv run ruff check src tests scripts`, `uv run ty check src/fluxy`, and `uv run pyright`.
+- Latest static checks passed: `uv run ruff check src tests scripts` and `uv run ty check src/fluxy`.
 
 ## Added API Coverage
 

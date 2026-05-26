@@ -45,7 +45,7 @@ def test_deploy_run_delete_then_run_fails_for_hello_world_function_file():
     try:
         fx.scripting.deploy_function_file("hello_world.py", target_directory=target_directory)
         fx.project.request_scan()
-        result = fx.scripting.run_function_file("hello_world.py", target_directory=target_directory)
+        result = eventually_run_function_file(fx, "hello_world.py", target_directory=target_directory)
         fx.scripting.delete_function_file("hello_world.py", target_directory=target_directory)
         fx.project.request_scan()
     except FluxyError as exc:

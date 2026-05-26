@@ -16,7 +16,7 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: Manufacturing",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+    "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -26,11 +26,12 @@ classifiers = [
 ]
 dependencies = [
     "httpx>=0.27",
+    "idna>=3.15",
 ]
 
 [project.optional-dependencies]
 sqlalchemy = ["sqlalchemy>=2.0"]
-mcp = ["mcp>=1.0"]
+mcp = ["mcp>=1.0", "starlette>=1.0.1"]
 
 [project.scripts]
 fluxy-deploy-webdev = "fluxy.deploy_webdev.core:main"
@@ -48,10 +49,9 @@ Issues = "https://github.com/Bobby-Miller/Fluxy/issues"
 
 [dependency-groups]
 dev = [
-    "pyright>=1.1.390",
     "pytest>=8.0",
-    "ruff>=0.6",
-    "ty>=0.0.35",
+    "ruff>=0.15.14",
+    "ty>=0.0.39",
 ]
 sqlalchemy = [
     "sqlalchemy>=2.0",
@@ -79,11 +79,16 @@ line-length = 100
 target-version = "py312"
 extend-exclude = ["ignition_webdev", "flux_*"]
 
-[tool.pyright]
+[tool.ty.environment]
+python-version = "3.12"
+python-platform = "linux"
+root = ["./src"]
+
+[tool.ty.src]
 include = ["src/fluxy"]
-pythonVersion = "3.12"
-typeCheckingMode = "basic"
-reportMissingTypeStubs = false
+
+[tool.ty.analysis]
+allowed-unresolved-imports = ["mcp.**", "sqlalchemy.**"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

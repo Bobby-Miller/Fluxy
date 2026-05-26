@@ -180,7 +180,7 @@ class TagNamespace:
     def export_tags(self, tag_paths: str | list[str], recursive: bool = True) -> ExportTagsResult:
         return self._fluxy.client.export_tags(tag_paths, recursive=recursive)
 
-    def get_configuration(self, path: str, recursive: bool = False) -> list[dict[str, Any]]:
+    def get_configuration(self, path: str | list[str], recursive: bool = False) -> list[dict[str, Any]]:
         return self._fluxy.client.get_configuration(path, recursive=recursive)
 
     def configure(
@@ -200,6 +200,9 @@ class TagNamespace:
     ) -> list[BrowseResult]:
         return self._fluxy.client.browse(path or self._fluxy.default_tag_base_path(), tag_filter=tag_filter)
 
+    def list_paths(self, path: str | None = None, tag_filter: dict[str, Any] | None = None) -> list[str]:
+        return self._fluxy.client.list_paths(path or self._fluxy.default_tag_base_path(), tag_filter=tag_filter)
+
     def query(
         self,
         provider: str | None = None,
@@ -218,6 +221,7 @@ class TagNamespace:
     importTags = import_tags
     exportTags = export_tags
     getConfiguration = get_configuration
+    listPaths = list_paths
 
 
 class ProjectNamespace:

@@ -16,7 +16,7 @@ def create_server(
     allow_destructive: bool = False,
 ) -> Any:
     try:
-        from mcp.server.fastmcp import FastMCP  # pyright: ignore[reportMissingImports]
+        from mcp.server.fastmcp import FastMCP
     except ImportError as exc:
         raise SystemExit("MCP support requires `fluxy-ign[mcp]` or `uv sync --extra mcp`.") from exc
 

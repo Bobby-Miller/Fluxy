@@ -33,7 +33,7 @@ fluxy-gateway-config --help
 ```bash
 uv run pytest -m "not integration"
 uv run ruff check src tests
-uv run pyright
+uv run ty check src/fluxy
 uv build
 ```
 
