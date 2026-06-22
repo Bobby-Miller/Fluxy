@@ -38,7 +38,7 @@ def test_flatten_tag_requests_resolves_udt_instance_opc_paths():
                     {
                         "name": "Well_01",
                         "tagType": "UdtInstance",
-                        "typeId": "[Tag_02]_types_/Well",
+                        "typeId": "[default]_types_/Well",
                         "parameters": {
                             "OPC_Server": {"dataType": "String", "value": "ACM_02"},
                             "OPC_Device": {"dataType": "String", "value": "RTU_01"},

@@ -107,7 +107,7 @@ Write/readback shape:
 
 ```python
 tag_paths = [
-    "[Tag_02]WY/AL/PADS/AL01-16/AL01-16_RTU_35/WELL/Well_01/LOAD_FACTOR",
+    "[default]Demo/Area_A/Unit_01/LOAD_FACTOR",
 ]
 
 qualities = fx.tag.write_blocking(tag_paths, [1.1])
@@ -428,7 +428,7 @@ The generated tag probe reads a tiny sample of full Ignition tag paths through t
 Generated-tag interface contract:
 
 - Input files provide full Ignition tag path strings.
-- Paths include providers, for example `[Tag_02]WY/AL/PADS/.../LOAD_FACTOR`.
+- Paths include providers, for example `[default]Demo/Area_A/.../LOAD_FACTOR`.
 - `fluxy` sends them to WebDev as JSON under the canonical `tagPaths` key.
 - WebDev runs `system.tag.readBlocking(tag_paths, timeout_ms)` inside Ignition and returns `value`, `quality`, and `timestamp` per path.
 
@@ -482,7 +482,7 @@ The configure integration test creates memory tags, reads their configured value
 
 ```bash
 FLUXY_BASE_URL="https://host/system/webdev/<webdev-project>" \
-FLUXY_CONFIGURE_BASE_PATH="[Tag_02]" \
+FLUXY_CONFIGURE_BASE_PATH="[default]FluxyDemo" \
 uv run pytest tests/test_integration_configure_types.py
 ```
 
@@ -490,7 +490,7 @@ The browse integration test inspects those configured memory tags:
 
 ```bash
 FLUXY_BASE_URL="https://host/system/webdev/<webdev-project>" \
-FLUXY_CONFIGURE_BASE_PATH="[Tag_02]" \
+FLUXY_CONFIGURE_BASE_PATH="[default]FluxyDemo" \
 uv run pytest tests/test_integration_browse_configured_tags.py
 ```
 

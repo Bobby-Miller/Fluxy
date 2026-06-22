@@ -1,14 +1,14 @@
 [project]
 # PyPI distribution name only. The package, import namespace, docs, and CLI remain Fluxy/fluxy.
 name = "fluxy-ign"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python client for controlled Ignition Gateway automation through WebDev"
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [
-    { name = "Bobby Miller" },
+    { name = "GreenPipe Partners" },
 ]
 keywords = ["ignition", "scada", "opc-ua", "webdev", "industrial-automation"]
 classifiers = [
@@ -42,10 +42,10 @@ fluxy-ignition-expression = "fluxy.ignition_expression.cli:main"
 fluxy-mcp = "fluxy.mcp.server:main"
 
 [project.urls]
-Homepage = "https://github.com/Bobby-Miller/Fluxy"
-Repository = "https://github.com/Bobby-Miller/Fluxy"
-Documentation = "https://github.com/Bobby-Miller/Fluxy/tree/main/docs"
-Issues = "https://github.com/Bobby-Miller/Fluxy/issues"
+Homepage = "https://github.com/GreenPipePartners/Fluxy"
+Repository = "https://github.com/GreenPipePartners/Fluxy"
+Documentation = "https://github.com/GreenPipePartners/Fluxy/tree/main/docs"
+Issues = "https://github.com/GreenPipePartners/Fluxy/issues"
 
 [dependency-groups]
 dev = [
