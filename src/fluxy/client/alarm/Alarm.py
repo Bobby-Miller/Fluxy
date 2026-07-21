@@ -64,7 +64,10 @@ class AlarmClientMixin:
         return [dict(result) for result in results if isinstance(result, dict)]
 
     def alarm_acknowledge(
-        self: AlarmTransport, alarm_ids: list[str], notes: str | None = None, username: str = "fluxy"
+        self: AlarmTransport,
+        alarm_ids: list[str],
+        notes: str | None = None,
+        username: str = "fluxy",
     ) -> list[str]:
         payload: dict[str, Any] = {"alarmIds": alarm_ids, "username": username}
         if notes is not None:

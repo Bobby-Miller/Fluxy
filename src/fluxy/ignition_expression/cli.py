@@ -10,7 +10,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Ignition expression utility commands.")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    resolve = subparsers.add_parser("resolve-binding", help="Resolve an Ignition parameter binding string")
+    resolve = subparsers.add_parser(
+        "resolve-binding", help="Resolve an Ignition parameter binding string"
+    )
     resolve.add_argument("template")
     resolve.add_argument("--context", required=True, help="JSON object of parameter values")
 

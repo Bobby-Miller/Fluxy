@@ -4,7 +4,9 @@ from ..common import COMMON
 from ..resource import WebDevResource
 
 
-LIST_DEVICES_POST = COMMON + r'''
+LIST_DEVICES_POST = (
+    COMMON
+    + r"""
 
 
 def _dataset_rows(dataset):
@@ -40,10 +42,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "listDevices failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-ADD_DEVICE_POST = COMMON + r'''
+ADD_DEVICE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -72,10 +77,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "addDevice failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-REMOVE_DEVICE_POST = COMMON + r'''
+REMOVE_DEVICE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -94,10 +102,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "removeDevice failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-SET_DEVICE_ENABLED_POST = COMMON + r'''
+SET_DEVICE_ENABLED_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -119,7 +130,8 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "setDeviceEnabled failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
 RESOURCES = [

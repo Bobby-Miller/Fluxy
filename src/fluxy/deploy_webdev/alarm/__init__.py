@@ -4,7 +4,7 @@ from ..common import COMMON
 from ..resource import WebDevResource
 
 
-DATASET_HELPERS = r'''
+DATASET_HELPERS = r"""
 
 
 def _dataset_to_wire(dataset):
@@ -21,10 +21,13 @@ def _dataset_to_wire(dataset):
             row.append(value)
         rows.append(row)
     return {"rows": rows, "columns": column_names}
-'''
+"""
 
 
-QUERY_STATUS_POST = COMMON + DATASET_HELPERS + r'''
+QUERY_STATUS_POST = (
+    COMMON
+    + DATASET_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -47,10 +50,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "queryStatus failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-SHELVE_POST = COMMON + r'''
+SHELVE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -76,10 +82,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "shelve failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-UNSHELVE_POST = COMMON + r'''
+UNSHELVE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -98,10 +107,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "unshelve failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_SHELVED_PATHS_POST = COMMON + r'''
+GET_SHELVED_PATHS_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -131,10 +143,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getShelvedPaths failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-ACKNOWLEDGE_POST = COMMON + r'''
+ACKNOWLEDGE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -155,7 +170,8 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "acknowledge failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
 RESOURCES = [

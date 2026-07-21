@@ -4,7 +4,9 @@ from ..common import COMMON
 from ..resource import WebDevResource
 
 
-READ_POST = COMMON + r'''
+READ_POST = (
+    COMMON
+    + r"""
 
 
 def _value_to_wire(value):
@@ -53,9 +55,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "readBlocking failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-WRITE_POST = COMMON + r'''
+WRITE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -84,9 +89,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "writeBlocking failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-DELETE_POST = COMMON + r'''
+DELETE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -108,9 +116,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "deleteTags failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-COPY_POST = COMMON + r'''
+COPY_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -140,9 +151,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "copy failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-MOVE_POST = COMMON + r'''
+MOVE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -164,9 +178,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "move failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-RENAME_POST = COMMON + r'''
+RENAME_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -188,9 +205,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "rename failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-IMPORT_POST = COMMON + r'''
+IMPORT_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -239,9 +259,12 @@ def doPost(request, session):
                 os.remove(temp_path)
             except Exception:
                 pass
-'''
+"""
+)
 
-EXPORT_POST = COMMON + r'''
+EXPORT_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -282,9 +305,12 @@ def doPost(request, session):
                 os.remove(temp_path)
             except Exception:
                 pass
-'''
+"""
+)
 
-GET_CONFIGURATION_POST = COMMON + r'''
+GET_CONFIGURATION_POST = (
+    COMMON
+    + r"""
 
 
 def _value_to_wire(value):
@@ -387,9 +413,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getConfiguration failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-CONFIGURE_POST = COMMON + r'''
+CONFIGURE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -419,9 +448,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "configure failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-BROWSE_POST = COMMON + r'''
+BROWSE_POST = (
+    COMMON
+    + r"""
 
 
 def _browse_result_to_dict(result):
@@ -464,9 +496,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "browse failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-QUERY_POST = COMMON + r'''
+QUERY_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -522,7 +557,8 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "query failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 RESOURCES = [
     WebDevResource("tag/readBlocking", "readBlocking", READ_POST),

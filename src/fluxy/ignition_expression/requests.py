@@ -100,7 +100,9 @@ def _collect_requests(
         _collect_requests(child, path, context, udt_types, requests)
 
 
-def _opc_request(path: str, tag: Mapping[str, Any], context: Mapping[str, Any]) -> TagRequest | None:
+def _opc_request(
+    path: str, tag: Mapping[str, Any], context: Mapping[str, Any]
+) -> TagRequest | None:
     opc_item_path = tag.get("opcItemPath")
     opc_server = _resolve_optional_binding(tag.get("opcServer"), context)
     data_type = str(tag.get("dataType") or "")

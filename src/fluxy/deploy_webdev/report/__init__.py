@@ -4,7 +4,7 @@ from ..common import COMMON
 from ..resource import WebDevResource
 
 
-DATASET_HELPERS = r'''
+DATASET_HELPERS = r"""
 
 
 def _dataset_to_wire(dataset):
@@ -21,10 +21,12 @@ def _dataset_to_wire(dataset):
             row.append(value)
         rows.append(row)
     return {"rows": rows, "columns": column_names}
-'''
+"""
 
 
-GET_REPORT_NAMES_AS_LIST_POST = COMMON + r'''
+GET_REPORT_NAMES_AS_LIST_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -43,10 +45,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getReportNamesAsList failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_REPORT_NAMES_AS_DATASET_POST = COMMON + DATASET_HELPERS + r'''
+GET_REPORT_NAMES_AS_DATASET_POST = (
+    COMMON
+    + DATASET_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -70,10 +76,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getReportNamesAsDataset failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-EXECUTE_REPORT_POST = COMMON + r'''
+EXECUTE_REPORT_POST = (
+    COMMON
+    + r"""
 
 import base64
 
@@ -106,11 +115,18 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "executeReport failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
 RESOURCES = [
-    WebDevResource("report/getReportNamesAsList", "getReportNamesAsList", GET_REPORT_NAMES_AS_LIST_POST),
-    WebDevResource("report/getReportNamesAsDataset", "getReportNamesAsDataset", GET_REPORT_NAMES_AS_DATASET_POST),
+    WebDevResource(
+        "report/getReportNamesAsList", "getReportNamesAsList", GET_REPORT_NAMES_AS_LIST_POST
+    ),
+    WebDevResource(
+        "report/getReportNamesAsDataset",
+        "getReportNamesAsDataset",
+        GET_REPORT_NAMES_AS_DATASET_POST,
+    ),
     WebDevResource("report/executeReport", "executeReport", EXECUTE_REPORT_POST),
 ]

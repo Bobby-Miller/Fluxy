@@ -41,7 +41,9 @@ def deploy_sqlite_connection(
     resource_path = resource_dir / "resource.json"
     connect_url = "jdbc:sqlite:${data}/%s" % target_relative_path.as_posix()
 
-    config_path.write_text(json.dumps(sqlite_connection_config(connect_url), indent=2) + "\n", encoding="utf-8")
+    config_path.write_text(
+        json.dumps(sqlite_connection_config(connect_url), indent=2) + "\n", encoding="utf-8"
+    )
     resource_path.write_text(
         json.dumps(sqlite_connection_resource(connection_name), indent=2) + "\n",
         encoding="utf-8",
@@ -89,9 +91,14 @@ def sqlite_connection_resource(connection_name: str) -> dict[str, object]:
         "attributes": {
             "lastModification": {
                 "actor": "fluxy.gateway_config",
-                "timestamp": datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+                "timestamp": datetime.now(UTC)
+                .replace(microsecond=0)
+                .isoformat()
+                .replace("+00:00", "Z"),
             },
-            "uuid": str(uuid.uuid5(uuid.NAMESPACE_URL, "fluxy:database-connection:%s" % connection_name)),
+            "uuid": str(
+                uuid.uuid5(uuid.NAMESPACE_URL, "fluxy:database-connection:%s" % connection_name)
+            ),
             "enabled": True,
         },
     }
@@ -187,9 +194,14 @@ def postgres_connection_resource(connection_name: str) -> dict[str, object]:
         "attributes": {
             "lastModification": {
                 "actor": "fluxy.gateway_config",
-                "timestamp": datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+                "timestamp": datetime.now(UTC)
+                .replace(microsecond=0)
+                .isoformat()
+                .replace("+00:00", "Z"),
             },
-            "uuid": str(uuid.uuid5(uuid.NAMESPACE_URL, "fluxy:database-connection:%s" % connection_name)),
+            "uuid": str(
+                uuid.uuid5(uuid.NAMESPACE_URL, "fluxy:database-connection:%s" % connection_name)
+            ),
             "enabled": True,
         },
     }
@@ -208,7 +220,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("sqlite_path", type=Path, nargs="?")
     parser.add_argument("--connection-name")
     parser.add_argument("--target-relative-path", type=Path, default=DEFAULT_SQLITE_TARGET)
-    parser.add_argument("--postgres", action="store_true", help="write a PostgreSQL database connection")
+    parser.add_argument(
+        "--postgres", action="store_true", help="write a PostgreSQL database connection"
+    )
     parser.add_argument("--host", default="localhost")
     parser.add_argument("--port", type=int, default=5432)
     parser.add_argument("--database", default="fluxy_test")
@@ -240,7 +254,9 @@ def main() -> None:
             connection_name=connection_name,
             target_relative_path=args.target_relative_path,
         )
-    print("Wrote %d Gateway config files for database connection %s" % (len(written), connection_name))
+    print(
+        "Wrote %d Gateway config files for database connection %s" % (len(written), connection_name)
+    )
 
 
 if __name__ == "__main__":

@@ -37,7 +37,9 @@ def resolve_parameter_binding(template: str, context: Mapping[str, Any]) -> Bind
         value = unwrap_parameter_value(context[token])
         if isinstance(value, dict) and value.get("bindType") == "parameter":
             nested = resolve_parameter_binding(str(value.get("binding") or ""), context)
-            resolved_tokens.update({f"{token}.{key}": item for key, item in nested.resolved_tokens.items()})
+            resolved_tokens.update(
+                {f"{token}.{key}": item for key, item in nested.resolved_tokens.items()}
+            )
             unresolved_tokens.extend(nested.unresolved_tokens)
             value = nested.value
         resolved_tokens[token] = value

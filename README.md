@@ -33,6 +33,25 @@ Clients must pass the same bearer token:
 fx = Fluxy("http://localhost:8088/system/webdev/flux", token="shared-secret-token")
 ```
 
+Ignition 8.1.50+ and 8.3 can instead use the matching Gateway module in `ignition-module/`:
+
+```python
+fx = Fluxy(
+    "https://ignition.example/data",
+    api_token="fluxy-service:<one-time-secret>",
+    run_id="commissioning-20260711",
+    script_name="build_tags.py",
+)
+```
+
+The module preserves one future-facing Fluxy wire contract at `/data/fluxy/...` on 8.3 and `/main/data/fluxy/...` on 8.1; no WebDev project is required. The 8.1 artifact privately translates modern historian/date operations to legacy system functions. Its allowlisted surface covers version, memory-tag configure/read/write/browse/delete, raw historian store/query operations, correlation logging, and durable mutation auditing through the configured Gateway audit profile.
+
+The module works with an entitled activated license or while Ignition's trial is active. Expired trials return HTTP `403`, surfaced by Python as `FluxyLicenseExpiredError`. Official builds are non-free; previously entitled activated versions remain operational when maintenance ends.
+
+An explicit unsigned `-PlicenseMode=free` module variant is available for private use. It retains authentication and the same Python contract but does not require an Ignition trial or module entitlement; it cannot be installed alongside the licensed variant because both use the same module ID.
+
+See [the module documentation](https://github.com/GreenPipePartners/Fluxy/tree/main/ignition-module/docs/ignition-module.md) for build, installation, Gateway API permission, historian, licensing, and live-test instructions. See `LICENSING.md` for the MIT Python/MPL module boundary.
+
 See `docs/auth.md` for the full auth workflow, including token creation, project scan, client configuration, and troubleshooting `401`/`403` responses.
 
 Run the optional MCP adapter:

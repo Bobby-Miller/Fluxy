@@ -4,7 +4,7 @@ from ..common import COMMON
 from ..resource import WebDevResource
 
 
-USER_HELPERS = r'''
+USER_HELPERS = r"""
 
 
 def _ui_response_to_wire(response):
@@ -83,10 +83,12 @@ def _apply_user_payload(user, payload, include_password):
     if contact_info:
         user.addContactInfo(dict((str(key), str(value)) for key, value in contact_info.items()))
     return user
-'''
+"""
 
 
-GET_USER_SOURCES_POST = COMMON + r'''
+GET_USER_SOURCES_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -103,10 +105,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getUserSources failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_ROLES_POST = COMMON + r'''
+GET_ROLES_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -125,10 +130,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getRoles failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-ADD_ROLE_POST = COMMON + USER_HELPERS + r'''
+ADD_ROLE_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -146,10 +155,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "addRole failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-EDIT_ROLE_POST = COMMON + USER_HELPERS + r'''
+EDIT_ROLE_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -171,10 +184,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "editRole failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-REMOVE_ROLE_POST = COMMON + USER_HELPERS + r'''
+REMOVE_ROLE_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -192,10 +209,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "removeRole failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-ADD_USER_POST = COMMON + USER_HELPERS + r'''
+ADD_USER_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -219,10 +240,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "addUser failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_USER_POST = COMMON + USER_HELPERS + r'''
+GET_USER_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -238,10 +263,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getUser failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_USERS_POST = COMMON + USER_HELPERS + r'''
+GET_USERS_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -257,10 +286,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getUsers failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-EDIT_USER_POST = COMMON + USER_HELPERS + r'''
+EDIT_USER_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -282,10 +315,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "editUser failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-REMOVE_USER_POST = COMMON + USER_HELPERS + r'''
+REMOVE_USER_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -303,10 +340,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "removeUser failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-ADD_SCHEDULE_POST = COMMON + USER_HELPERS + r'''
+ADD_SCHEDULE_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -332,10 +373,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "addSchedule failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_SCHEDULE_POST = COMMON + USER_HELPERS + r'''
+GET_SCHEDULE_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -351,10 +396,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getSchedule failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_SCHEDULES_POST = COMMON + USER_HELPERS + r'''
+GET_SCHEDULES_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -369,10 +418,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getSchedules failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-REMOVE_SCHEDULE_POST = COMMON + USER_HELPERS + r'''
+REMOVE_SCHEDULE_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -390,10 +443,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "removeSchedule failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-ADD_HOLIDAY_POST = COMMON + USER_HELPERS + r'''
+ADD_HOLIDAY_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 from com.inductiveautomation.ignition.common.user.schedule import HolidayModel
 
@@ -423,10 +480,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "addHoliday failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_HOLIDAY_POST = COMMON + USER_HELPERS + r'''
+GET_HOLIDAY_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -442,10 +503,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getHoliday failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_HOLIDAYS_POST = COMMON + USER_HELPERS + r'''
+GET_HOLIDAYS_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -460,10 +525,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getHolidays failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-REMOVE_HOLIDAY_POST = COMMON + USER_HELPERS + r'''
+REMOVE_HOLIDAY_POST = (
+    COMMON
+    + USER_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -481,7 +550,8 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "removeHoliday failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
 RESOURCES = [

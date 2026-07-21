@@ -71,7 +71,8 @@ def add_named_query(
     target.mkdir(parents=True, exist_ok=True)
     (target / "query.sql").write_text(query.rstrip() + "\n", encoding="utf-8")
     (target / "resource.json").write_text(
-        json.dumps(named_query_resource(database=database, parameters=parameters or []), indent=2) + "\n",
+        json.dumps(named_query_resource(database=database, parameters=parameters or []), indent=2)
+        + "\n",
         encoding="utf-8",
     )
     return target
@@ -101,7 +102,9 @@ def safe_named_query_relative_path(name: str) -> Path:
     return path
 
 
-def named_query_parameter(identifier: str, sql_type: NamedQuerySqlType | int) -> NamedQueryParameter:
+def named_query_parameter(
+    identifier: str, sql_type: NamedQuerySqlType | int
+) -> NamedQueryParameter:
     if isinstance(sql_type, str):
         try:
             sql_type = NAMED_QUERY_SQL_TYPES[sql_type]
@@ -110,7 +113,9 @@ def named_query_parameter(identifier: str, sql_type: NamedQuerySqlType | int) ->
     return {"type": "Parameter", "identifier": identifier, "sqlType": sql_type}
 
 
-def named_query_resource(database: str = "", parameters: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+def named_query_resource(
+    database: str = "", parameters: list[dict[str, Any]] | None = None
+) -> dict[str, Any]:
     attributes: dict[str, Any] = {
         "useMaxReturnSize": False,
         "autoBatchEnabled": False,
@@ -126,7 +131,10 @@ def named_query_resource(database: str = "", parameters: list[dict[str, Any]] | 
         "permissions": [{"zone": "", "role": ""}],
         "lastModification": {
             "actor": "fluxy.named_query",
-            "timestamp": datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+            "timestamp": datetime.now(UTC)
+            .replace(microsecond=0)
+            .isoformat()
+            .replace("+00:00", "Z"),
         },
     }
     if parameters:

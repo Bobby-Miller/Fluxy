@@ -30,7 +30,11 @@ from .client import (
     UserResponse,
     WriteResult,
 )
-from .deploy_scripting import delete_function_file, deploy_builtin_function_file, deploy_function_file
+from .deploy_scripting import (
+    delete_function_file,
+    deploy_builtin_function_file,
+    deploy_function_file,
+)
 from .deploy_webdev import deploy as deploy_webdev_resources
 from .named_query import NamedQueryRunner, add_named_query, delete_named_query
 
@@ -43,6 +47,9 @@ class Fluxy:
         project_location: str | Path | None = None,
         tag_provider: str | None = None,
         token: str | None = None,
+        api_token: str | None = None,
+        run_id: str | None = None,
+        script_name: str | None = None,
         timeout: float = 60.0,
         http_client: httpx.Client | None = None,
         named_query_runner: NamedQueryRunner | None = None,
@@ -50,10 +57,15 @@ class Fluxy:
         self.client = FluxyClient(
             base_url=base_url,
             token=token,
+            api_token=api_token,
+            run_id=run_id,
+            script_name=script_name,
             timeout=timeout,
             http_client=http_client,
         )
-        self.project_location = Path(project_location).resolve() if project_location is not None else None
+        self.project_location = (
+            Path(project_location).resolve() if project_location is not None else None
+        )
         self.tag_provider = tag_provider
         self.named_query_runner = named_query_runner
         self.tag = TagNamespace(self)
@@ -157,7 +169,9 @@ class TagNamespace:
     def copy(
         self, tag_paths: str | list[str], destination_path: str, collision_policy: str = "o"
     ) -> Any:
-        return self._fluxy.client.copy(tag_paths, destination_path, collision_policy=collision_policy)
+        return self._fluxy.client.copy(
+            tag_paths, destination_path, collision_policy=collision_policy
+        )
 
     def move(self, source_path: str, destination_path: str) -> MoveResult:
         return self._fluxy.client.move(source_path, destination_path)
@@ -180,7 +194,9 @@ class TagNamespace:
     def export_tags(self, tag_paths: str | list[str], recursive: bool = True) -> ExportTagsResult:
         return self._fluxy.client.export_tags(tag_paths, recursive=recursive)
 
-    def get_configuration(self, path: str | list[str], recursive: bool = False) -> list[dict[str, Any]]:
+    def get_configuration(
+        self, path: str | list[str], recursive: bool = False
+    ) -> list[dict[str, Any]]:
         return self._fluxy.client.get_configuration(path, recursive=recursive)
 
     def configure(
@@ -198,10 +214,16 @@ class TagNamespace:
     def browse(
         self, path: str | None = None, tag_filter: dict[str, Any] | None = None
     ) -> list[BrowseResult]:
-        return self._fluxy.client.browse(path or self._fluxy.default_tag_base_path(), tag_filter=tag_filter)
+        return self._fluxy.client.browse(
+            path or self._fluxy.default_tag_base_path(), tag_filter=tag_filter
+        )
 
-    def list_paths(self, path: str | None = None, tag_filter: dict[str, Any] | None = None) -> list[str]:
-        return self._fluxy.client.list_paths(path or self._fluxy.default_tag_base_path(), tag_filter=tag_filter)
+    def list_paths(
+        self, path: str | None = None, tag_filter: dict[str, Any] | None = None
+    ) -> list[str]:
+        return self._fluxy.client.list_paths(
+            path or self._fluxy.default_tag_base_path(), tag_filter=tag_filter
+        )
 
     def query(
         self,
@@ -211,7 +233,9 @@ class TagNamespace:
         continuation: str | None = None,
     ) -> Any:
         selected_provider = provider or self._fluxy.tag_provider or "default"
-        return self._fluxy.client.query(selected_provider, query=query, limit=limit, continuation=continuation)
+        return self._fluxy.client.query(
+            selected_provider, query=query, limit=limit, continuation=continuation
+        )
 
     # Ignition-style aliases for porting scripts.
     readBlocking = read_blocking
@@ -327,7 +351,9 @@ class DbNamespace:
     def begin_transaction(
         self, database: str, isolation_level: int | None = None, timeout: int | None = None
     ) -> str:
-        return self._fluxy.client.db_begin_transaction(database, isolation_level=isolation_level, timeout=timeout)
+        return self._fluxy.client.db_begin_transaction(
+            database, isolation_level=isolation_level, timeout=timeout
+        )
 
     def commit_transaction(self, tx: str) -> bool:
         return self._fluxy.client.db_commit_transaction(tx)
@@ -963,10 +989,16 @@ class ScriptingNamespace:
     ) -> Path:
         project_location = self._fluxy.require_project_location()
         if source is None:
-            return deploy_builtin_function_file(project_location, file_name, target_directory=target_directory)
-        return deploy_function_file(project_location, file_name, source, target_directory=target_directory)
+            return deploy_builtin_function_file(
+                project_location, file_name, target_directory=target_directory
+            )
+        return deploy_function_file(
+            project_location, file_name, source, target_directory=target_directory
+        )
 
-    def delete_function_file(self, file_name: str, target_directory: str | Path | None = None) -> Path:
+    def delete_function_file(
+        self, file_name: str, target_directory: str | Path | None = None
+    ) -> Path:
         return delete_function_file(
             self._fluxy.require_project_location(),
             file_name,

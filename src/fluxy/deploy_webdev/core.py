@@ -139,7 +139,10 @@ def deploy(
             "overridable": True,
             "files": FILES,
             "attributes": {
-                "lastModification": {"actor": "fluxy.deploy_webdev", "timestamp": "2026-05-11T00:00:00Z"}
+                "lastModification": {
+                    "actor": "fluxy.deploy_webdev",
+                    "timestamp": "2026-05-11T00:00:00Z",
+                }
             },
         }
         files = {
@@ -150,8 +153,7 @@ def deploy(
             "doPost.py": authenticated_script(
                 designer_body(resource.post_script).replace("__PROJECT_PATH__", str(project_path)),
                 auth_token=auth_token,
-            )
-            .strip()
+            ).strip()
             + "\n",
             **STUBS,
         }
@@ -178,12 +180,18 @@ def designer_body(script: str) -> str:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Deploy fluxy WebDev resources into an Ignition project.")
+    parser = argparse.ArgumentParser(
+        description="Deploy fluxy WebDev resources into an Ignition project."
+    )
     parser.add_argument("project_path", type=Path)
     parser.add_argument("--namespace", default=DEFAULT_NAMESPACE)
-    parser.add_argument("--clean", action="store_true", help="Remove the target namespace before deploying.")
+    parser.add_argument(
+        "--clean", action="store_true", help="Remove the target namespace before deploying."
+    )
     parser.add_argument("--auth-token", help="Bearer token required by deployed WebDev resources.")
-    parser.add_argument("--auth-token-file", type=Path, help="File containing the bearer token to deploy.")
+    parser.add_argument(
+        "--auth-token-file", type=Path, help="File containing the bearer token to deploy."
+    )
     return parser.parse_args()
 
 

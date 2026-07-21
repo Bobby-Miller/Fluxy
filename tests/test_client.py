@@ -1,9 +1,10 @@
 import json
+from uuid import UUID
 
 import httpx
 import pytest
 
-from fluxy import Fluxy, FluxyClient, FluxyError
+from fluxy import Fluxy, FluxyClient, FluxyError, FluxyLicenseExpiredError
 
 
 class FakeNamedQueryRunner:
@@ -54,6 +55,71 @@ def test_read_blocking_posts_tag_paths_and_returns_qualified_values():
     assert values[0].tag_path == "[default]A/B"
     assert values[0].value == 12.3
     assert values[0].quality == "Good"
+
+
+def test_module_api_token_uses_ignition_header():
+    def handler(request):
+        assert request.url.path == "/data/fluxy/util/getVersion"
+        assert request.headers["x-ignition-api-token"] == "module-secret"
+        assert "authorization" not in request.headers
+        return httpx.Response(200, json={"ok": True, "version": "8.3.4", "major": 8, "minor": 3})
+
+    fx = Fluxy(
+        "https://ignition.example/data",
+        api_token="module-secret",
+        http_client=httpx.Client(transport=httpx.MockTransport(handler)),
+    )
+
+    assert fx.util.get_version().version == "8.3.4"
+
+
+def test_module_trace_headers_and_response_request_id():
+    def handler(request):
+        UUID(request.headers["x-fluxy-request-id"])
+        assert request.headers["x-fluxy-run-id"] == "batch-20260711"
+        assert request.headers["x-fluxy-script"] == "build_tags.py"
+        return httpx.Response(
+            200,
+            headers={
+                "X-Fluxy-Request-Id": "gateway-request-id",
+                "X-Fluxy-Run-Id": "gateway-run-id",
+            },
+            json={"ok": True, "version": "8.3.4", "major": 8, "minor": 3},
+        )
+
+    fx = Fluxy(
+        "https://ignition.example/data",
+        api_token="module-secret",
+        run_id="batch-20260711",
+        script_name="build_tags.py",
+        http_client=httpx.Client(transport=httpx.MockTransport(handler)),
+    )
+
+    fx.util.get_version()
+
+    assert fx.client.last_request_id == "gateway-request-id"
+    assert fx.client.last_run_id == "gateway-run-id"
+
+
+def test_module_trial_expired_raises_specific_error():
+    def handler(request):
+        return httpx.Response(
+            402,
+            json={
+                "ok": False,
+                "code": "MODULE_TRIAL_EXPIRED",
+                "error": "Fluxy module trial has expired",
+            },
+        )
+
+    fx = Fluxy(
+        "https://ignition.example/data",
+        api_token="module-secret",
+        http_client=httpx.Client(transport=httpx.MockTransport(handler)),
+    )
+
+    with pytest.raises(FluxyLicenseExpiredError, match="trial has expired"):
+        fx.util.get_version()
 
 
 def test_fluxy_deploy_webdev_passes_auth_token(tmp_path):
@@ -503,6 +569,7 @@ def test_browse_posts_path_and_filter_and_returns_results():
     assert results[0].full_path == "[default]Folder/MemoryFloat"
     assert results[0].tag_type == "AtomicTag"
     assert results[0].data_type == "Float4"
+    assert results[0].has_children is False
 
 
 def test_list_paths_returns_browsed_full_paths():

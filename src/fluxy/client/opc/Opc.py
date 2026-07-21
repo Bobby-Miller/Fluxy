@@ -64,7 +64,9 @@ class OpcClientMixin:
             raise FluxyError("browse response missing `results` list")
         return [dict(result) for result in results if isinstance(result, dict)]
 
-    def opc_browse_server(self: OpcTransport, opc_server: str, node_id: str) -> list[dict[str, Any]]:
+    def opc_browse_server(
+        self: OpcTransport, opc_server: str, node_id: str
+    ) -> list[dict[str, Any]]:
         response = self._post(
             self.opc_browse_server_path, {"opcServer": opc_server, "nodeId": node_id}
         )
@@ -99,14 +101,20 @@ class OpcClientMixin:
         return [dict(result) for result in results if isinstance(result, dict)]
 
     def opc_read_value(self: OpcTransport, opc_server: str, item_path: str) -> OpcValue:
-        response = self._post(self.opc_read_value_path, {"opcServer": opc_server, "itemPath": item_path})
+        response = self._post(
+            self.opc_read_value_path, {"opcServer": opc_server, "itemPath": item_path}
+        )
         return OpcValue(
             value=response.get("value"),
             quality=str(response.get("quality") or ""),
-            timestamp=response.get("timestamp") if isinstance(response.get("timestamp"), int) else None,
+            timestamp=response.get("timestamp")
+            if isinstance(response.get("timestamp"), int)
+            else None,
         )
 
-    def opc_read_values(self: OpcTransport, opc_server: str, item_paths: list[str]) -> list[OpcValue]:
+    def opc_read_values(
+        self: OpcTransport, opc_server: str, item_paths: list[str]
+    ) -> list[OpcValue]:
         response = self._post(
             self.opc_read_values_path, {"opcServer": opc_server, "itemPaths": item_paths}
         )

@@ -4,7 +4,7 @@ from ..common import COMMON
 from ..resource import WebDevResource
 
 
-VALUE_HELPERS = r'''
+VALUE_HELPERS = r"""
 
 
 def _qualified_value(value):
@@ -51,10 +51,12 @@ def _browse_element(element):
         except Exception:
             pass
     return item
-'''
+"""
 
 
-GET_SERVERS_POST = COMMON + r'''
+GET_SERVERS_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -70,10 +72,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getServers failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_SERVER_STATE_POST = COMMON + r'''
+GET_SERVER_STATE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -92,10 +97,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getServerState failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-BROWSE_POST = COMMON + VALUE_HELPERS + r'''
+BROWSE_POST = (
+    COMMON
+    + VALUE_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -116,10 +125,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "browse failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-BROWSE_SERVER_POST = COMMON + VALUE_HELPERS + r'''
+BROWSE_SERVER_POST = (
+    COMMON
+    + VALUE_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -141,10 +154,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "browseServer failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-BROWSE_SIMPLE_POST = COMMON + VALUE_HELPERS + r'''
+BROWSE_SIMPLE_POST = (
+    COMMON
+    + VALUE_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -165,10 +182,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "browseSimple failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-READ_VALUE_POST = COMMON + VALUE_HELPERS + r'''
+READ_VALUE_POST = (
+    COMMON
+    + VALUE_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -191,10 +212,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "readValue failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-READ_VALUES_POST = COMMON + VALUE_HELPERS + r'''
+READ_VALUES_POST = (
+    COMMON
+    + VALUE_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -216,10 +241,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "readValues failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-WRITE_VALUE_POST = COMMON + r'''
+WRITE_VALUE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -239,10 +267,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "writeValue failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-WRITE_VALUES_POST = COMMON + r'''
+WRITE_VALUES_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -262,7 +293,8 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "writeValues failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
 RESOURCES = [

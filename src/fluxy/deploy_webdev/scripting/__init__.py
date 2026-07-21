@@ -4,7 +4,9 @@ from ..common import COMMON
 from ..resource import WebDevResource
 
 
-RUN_FUNCTION_FILE_POST = COMMON + r'''
+RUN_FUNCTION_FILE_POST = (
+    COMMON
+    + r"""
 
 PROJECT_PATH = "__PROJECT_PATH__"
 FUNCTION_ROOT = "ignition/script-python/fluxy_functions"
@@ -74,8 +76,11 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "runFunctionFile failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 RESOURCES = [
-    WebDevResource("scripting/runFunctionFile", "scripting/runFunctionFile", RUN_FUNCTION_FILE_POST),
+    WebDevResource(
+        "scripting/runFunctionFile", "scripting/runFunctionFile", RUN_FUNCTION_FILE_POST
+    ),
 ]

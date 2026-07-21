@@ -8,7 +8,12 @@ __pycache__/
 htmlcov/
 dist/
 build/
+.gradle/
 *.egg-info/
+ignition-module/release/*.modl*
+
+# User-owned local smoke script; may contain development credentials.
+/script.py
 
 # Local database/test artifacts
 *.sqlite3

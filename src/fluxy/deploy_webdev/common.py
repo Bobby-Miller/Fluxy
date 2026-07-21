@@ -1,4 +1,4 @@
-COMMON = r'''
+COMMON = r"""
 AUTH_TOKEN = ""  # Optional bearer token. Leave blank to disable auth.
 LOGGER_NAME = "Fluxy.WebDev"
 
@@ -62,4 +62,4 @@ def _request_debug(request):
             value = request.get(key)
             details[key] = str(type(value))
     return details
-'''.strip()
+""".strip()

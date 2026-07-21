@@ -4,6 +4,7 @@ import logging
 from dataclasses import dataclass
 from json import JSONDecodeError
 from typing import Any
+from uuid import uuid4
 
 import httpx
 
@@ -25,6 +26,23 @@ LOGGER = logging.getLogger("fluxy.client")
 
 class FluxyError(RuntimeError):
     """Raised when the Fluxy WebDev bridge rejects or cannot complete a request."""
+
+    def __init__(self, message: str, *, status_code: int | None = None, code: str | None = None):
+        super().__init__(message)
+        self.status_code = status_code
+        self.code = code
+
+
+class FluxyTimeoutError(FluxyError):
+    """Raised when a Fluxy request exceeds its configured timeout."""
+
+
+class FluxyTransportError(FluxyError):
+    """Raised when the Gateway cannot be reached."""
+
+
+class FluxyLicenseExpiredError(FluxyError):
+    """Raised when the Fluxy module rejects a request because its trial expired."""
 
 
 @dataclass(frozen=True)
@@ -52,6 +70,9 @@ class FluxyClient(
         base_url: str,
         *,
         token: str | None = None,
+        api_token: str | None = None,
+        run_id: str | None = None,
+        script_name: str | None = None,
         timeout: float = 60.0,
         read_path: str = "/fluxy/tag/readBlocking",
         write_path: str = "/fluxy/tag/writeBlocking",
@@ -99,6 +120,9 @@ class FluxyClient(
         historian_store_metadata_path: str = "/fluxy/historian/storeMetadata",
         historian_query_metadata_path: str = "/fluxy/historian/queryMetadata",
         historian_query_aggregated_points_path: str = "/fluxy/historian/queryAggregatedPoints",
+        capabilities_path: str = "/fluxy/capabilities",
+        historian_page_path: str = "/fluxy/historian/page",
+        historian_stream_path: str = "/fluxy/historian/stream",
         util_get_version_path: str = "/fluxy/util/getVersion",
         util_get_modules_path: str = "/fluxy/util/getModules",
         util_get_gateway_status_path: str = "/fluxy/util/getGatewayStatus",
@@ -147,6 +171,11 @@ class FluxyClient(
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.token = token
+        self.api_token = api_token
+        self.run_id = run_id or str(uuid4())
+        self.script_name = script_name
+        self.last_request_id: str | None = None
+        self.last_run_id: str = self.run_id
         self.timeout = timeout
         self._ignition_version_cache: IgnitionVersion | None = None
         self.read_path = read_path
@@ -195,6 +224,9 @@ class FluxyClient(
         self.historian_store_metadata_path = historian_store_metadata_path
         self.historian_query_metadata_path = historian_query_metadata_path
         self.historian_query_aggregated_points_path = historian_query_aggregated_points_path
+        self.capabilities_path = capabilities_path
+        self.historian_page_path = historian_page_path
+        self.historian_stream_path = historian_stream_path
         self.util_get_version_path = util_get_version_path
         self.util_get_modules_path = util_get_modules_path
         self.util_get_gateway_status_path = util_get_gateway_status_path
@@ -263,15 +295,53 @@ class FluxyClient(
 
     def _post(self, path: str, payload: dict[str, Any]) -> dict[str, Any]:
         url = self.base_url + path
-        LOGGER.debug("Fluxy request path=%s payload_keys=%s", path, sorted(payload.keys()))
-        response = self._client.post(url, json=payload, headers=self._headers())
+        request_id = str(uuid4())
+        self.last_request_id = request_id
+        LOGGER.debug(
+            "Fluxy request path=%s request_id=%s run_id=%s payload_keys=%s",
+            path,
+            request_id,
+            self.run_id,
+            sorted(payload.keys()),
+        )
+        try:
+            response = self._client.post(
+                url,
+                json=payload,
+                headers=self._headers(request_id=request_id),
+                timeout=self.timeout,
+            )
+        except httpx.TimeoutException as exc:
+            raise FluxyTimeoutError("Fluxy request timed out: %s" % path) from exc
+        except httpx.RequestError as exc:
+            raise FluxyTransportError("Fluxy transport failed for %s: %s" % (path, exc)) from exc
+        self.last_request_id = response.headers.get("X-Fluxy-Request-Id", request_id)
+        self.last_run_id = response.headers.get("X-Fluxy-Run-Id", self.run_id)
         try:
             response.raise_for_status()
         except httpx.HTTPStatusError as exc:
             LOGGER.warning("Fluxy HTTP error path=%s status=%s", path, exc.response.status_code)
+            try:
+                error_payload = exc.response.json()
+            except JSONDecodeError:
+                error_payload = None
+            if (
+                isinstance(error_payload, dict)
+                and error_payload.get("code") == "MODULE_TRIAL_EXPIRED"
+            ):
+                raise FluxyLicenseExpiredError(
+                    str(error_payload.get("error") or "Fluxy module trial has expired")
+                ) from exc
+            code = error_payload.get("code") if isinstance(error_payload, dict) else None
+            message = error_payload.get("error") if isinstance(error_payload, dict) else None
             raise FluxyError(
-                "Fluxy bridge returned HTTP %s: %s"
-                % (exc.response.status_code, exc.response.text[:500])
+                str(
+                    message
+                    or "Fluxy bridge returned HTTP %s: %s"
+                    % (exc.response.status_code, exc.response.text[:500])
+                ),
+                status_code=exc.response.status_code,
+                code=str(code) if code is not None else None,
             ) from exc
 
         try:
@@ -288,13 +358,25 @@ class FluxyClient(
         if data.get("ok") is False:
             LOGGER.warning("Fluxy rejected request path=%s error=%s", path, data.get("error"))
             raise FluxyError(str(data.get("error", "Fluxy bridge request failed")))
-        LOGGER.debug("Fluxy response ok path=%s response_keys=%s", path, sorted(data.keys()))
+        LOGGER.debug(
+            "Fluxy response ok path=%s request_id=%s response_keys=%s",
+            path,
+            self.last_request_id,
+            sorted(data.keys()),
+        )
         return data
 
-    def _headers(self) -> dict[str, str]:
+    def _headers(self, *, request_id: str | None = None) -> dict[str, str]:
         headers = {"Accept": "application/json"}
         if self.token:
             headers["Authorization"] = "Bearer %s" % self.token
+        if self.api_token:
+            headers["X-Ignition-API-Token"] = self.api_token
+        if request_id:
+            headers["X-Fluxy-Request-Id"] = request_id
+        headers["X-Fluxy-Run-Id"] = self.run_id
+        if self.script_name:
+            headers["X-Fluxy-Script"] = self.script_name
         return headers
 
     def close(self) -> None:

@@ -4,7 +4,7 @@ from ..common import COMMON
 from ..resource import WebDevResource
 
 
-DATASET_HELPERS = r'''
+DATASET_HELPERS = r"""
 
 
 def _dataset_to_wire(dataset):
@@ -21,10 +21,12 @@ def _dataset_to_wire(dataset):
             row.append(value)
         rows.append(row)
     return {"rows": rows, "columns": column_names}
-'''
+"""
 
 
-GET_VERSION_POST = COMMON + r'''
+GET_VERSION_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -39,10 +41,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getVersion failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_MODULES_POST = COMMON + DATASET_HELPERS + r'''
+GET_MODULES_POST = (
+    COMMON
+    + DATASET_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -57,10 +63,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getModules failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_GATEWAY_STATUS_POST = COMMON + r'''
+GET_GATEWAY_STATUS_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -87,10 +96,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getGatewayStatus failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-GET_PROJECT_NAME_POST = COMMON + r'''
+GET_PROJECT_NAME_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -105,10 +117,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getProjectName failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-AUDIT_POST = COMMON + r'''
+AUDIT_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -145,10 +160,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "audit failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-QUERY_AUDIT_LOG_POST = COMMON + DATASET_HELPERS + r'''
+QUERY_AUDIT_LOG_POST = (
+    COMMON
+    + DATASET_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -183,7 +202,8 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "queryAuditLog failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
 RESOURCES = [

@@ -4,7 +4,9 @@ from ..common import COMMON
 from ..resource import WebDevResource
 
 
-GET_CONNECTIONS_POST = COMMON + r'''
+GET_CONNECTIONS_POST = (
+    COMMON
+    + r"""
 
 
 def _connection_to_dict(row):
@@ -35,9 +37,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getConnections failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-GET_CONNECTION_INFO_POST = COMMON + r'''
+GET_CONNECTION_INFO_POST = (
+    COMMON
+    + r"""
 
 
 def _read_value(item, key):
@@ -117,9 +122,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getConnectionInfo failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-ADD_DATASOURCE_POST = COMMON + r'''
+ADD_DATASOURCE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -160,9 +168,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "addDatasource failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-SET_DATASOURCE_CONNECT_URL_POST = COMMON + r'''
+SET_DATASOURCE_CONNECT_URL_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -184,9 +195,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "setDatasourceConnectURL failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-SET_DATASOURCE_ENABLED_POST = COMMON + r'''
+SET_DATASOURCE_ENABLED_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -208,9 +222,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "setDatasourceEnabled failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-SET_DATASOURCE_MAX_CONNECTIONS_POST = COMMON + r'''
+SET_DATASOURCE_MAX_CONNECTIONS_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -232,9 +249,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "setDatasourceMaxConnections failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-REMOVE_DATASOURCE_POST = COMMON + r'''
+REMOVE_DATASOURCE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -253,9 +273,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "removeDatasource failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-BEGIN_TRANSACTION_POST = COMMON + r'''
+BEGIN_TRANSACTION_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -283,9 +306,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "beginTransaction failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-COMMIT_TRANSACTION_POST = COMMON + r'''
+COMMIT_TRANSACTION_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -304,9 +330,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "commitTransaction failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-ROLLBACK_TRANSACTION_POST = COMMON + r'''
+ROLLBACK_TRANSACTION_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -325,9 +354,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "rollbackTransaction failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-CLOSE_TRANSACTION_POST = COMMON + r'''
+CLOSE_TRANSACTION_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -346,9 +378,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "closeTransaction failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-RUN_SCALAR_QUERY_POST = COMMON + r'''
+RUN_SCALAR_QUERY_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -374,9 +409,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "runScalarQuery failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-RUN_QUERY_POST = COMMON + r'''
+RUN_QUERY_POST = (
+    COMMON
+    + r"""
 
 
 def _dataset_to_wire(dataset):
@@ -424,9 +462,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "runQuery failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-RUN_SCALAR_PREP_QUERY_POST = COMMON + r'''
+RUN_SCALAR_PREP_QUERY_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -449,9 +490,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "runScalarPrepQuery failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-RUN_PREP_QUERY_POST = COMMON + r'''
+RUN_PREP_QUERY_POST = (
+    COMMON
+    + r"""
 
 
 def _dataset_to_wire(dataset):
@@ -496,9 +540,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "runPrepQuery failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-RUN_PREP_UPDATE_POST = COMMON + r'''
+RUN_PREP_UPDATE_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -528,9 +575,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "runPrepUpdate failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-RUN_UPDATE_QUERY_POST = COMMON + r'''
+RUN_UPDATE_QUERY_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -560,9 +610,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "runUpdateQuery failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-RUN_NAMED_QUERY_POST = COMMON + r'''
+RUN_NAMED_QUERY_POST = (
+    COMMON
+    + r"""
 
 
 def _dataset_to_wire(dataset):
@@ -608,7 +661,8 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "runNamedQuery failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 RESOURCES = [
     WebDevResource("db/getConnections", "db/getConnections", GET_CONNECTIONS_POST),
@@ -619,7 +673,9 @@ RESOURCES = [
         "db/setDatasourceConnectURL",
         SET_DATASOURCE_CONNECT_URL_POST,
     ),
-    WebDevResource("db/setDatasourceEnabled", "db/setDatasourceEnabled", SET_DATASOURCE_ENABLED_POST),
+    WebDevResource(
+        "db/setDatasourceEnabled", "db/setDatasourceEnabled", SET_DATASOURCE_ENABLED_POST
+    ),
     WebDevResource(
         "db/setDatasourceMaxConnections",
         "db/setDatasourceMaxConnections",

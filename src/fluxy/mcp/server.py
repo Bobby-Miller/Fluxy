@@ -108,7 +108,9 @@ def register_tools(
             base_path: str | None = None,
             collision_policy: str = "o",
         ) -> list[dict[str, Any]]:
-            return _to_wire(fx.tag.configure(tags, base_path=base_path, collision_policy=collision_policy))
+            return _to_wire(
+                fx.tag.configure(tags, base_path=base_path, collision_policy=collision_policy)
+            )
 
     if allow_destructive:
 
@@ -128,7 +130,9 @@ def _to_wire(value: Any) -> Any:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run an MCP server backed by a Fluxy Ignition bridge.")
+    parser = argparse.ArgumentParser(
+        description="Run an MCP server backed by a Fluxy Ignition bridge."
+    )
     parser.add_argument(
         "--base-url",
         default=os.getenv("FLUXY_BASE_URL", "http://localhost:8088/system/webdev/flux"),
@@ -137,7 +141,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--token-file", type=Path)
     parser.add_argument("--project-location", default=os.getenv("FLUXY_PROJECT_LOCATION"))
     parser.add_argument("--tag-provider", default=os.getenv("FLUXY_TAG_PROVIDER", "default"))
-    parser.add_argument("--timeout", type=float, default=float(os.getenv("FLUXY_TIMEOUT_SECONDS", "60")))
+    parser.add_argument(
+        "--timeout", type=float, default=float(os.getenv("FLUXY_TIMEOUT_SECONDS", "60"))
+    )
     parser.add_argument("--allow-writes", action="store_true")
     parser.add_argument("--allow-destructive", action="store_true")
     return parser.parse_args()

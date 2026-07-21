@@ -4,7 +4,9 @@ from ..common import COMMON
 from ..resource import WebDevResource
 
 
-REQUEST_SCAN_POST = COMMON + r'''
+REQUEST_SCAN_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -19,9 +21,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "requestScan failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-GET_PROJECT_NAME_POST = COMMON + r'''
+GET_PROJECT_NAME_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -36,9 +41,12 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getProjectName failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
-GET_PROJECT_NAMES_POST = COMMON + r'''
+GET_PROJECT_NAMES_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -53,7 +61,8 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "getProjectNames failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 RESOURCES = [
     WebDevResource("project/requestScan", "project/requestScan", REQUEST_SCAN_POST),

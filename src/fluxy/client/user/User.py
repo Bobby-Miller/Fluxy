@@ -146,7 +146,9 @@ class UserClientMixin:
 
     def user_remove_user(self: UserTransport, user_source: str, username: str) -> UserResponse:
         return UserResponse.from_payload(
-            self._post(self.user_remove_user_path, {"userSource": user_source, "username": username})
+            self._post(
+                self.user_remove_user_path, {"userSource": user_source, "username": username}
+            )
         )
 
     def user_add_schedule(

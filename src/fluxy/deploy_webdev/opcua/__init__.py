@@ -4,7 +4,9 @@ from ..common import COMMON
 from ..resource import WebDevResource
 
 
-ADD_CONNECTION_POST = COMMON + r'''
+ADD_CONNECTION_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -43,10 +45,13 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "addConnection failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-REMOVE_CONNECTION_POST = COMMON + r'''
+REMOVE_CONNECTION_POST = (
+    COMMON
+    + r"""
 
 
 def doPost(request, session):
@@ -65,7 +70,8 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "removeConnection failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
 RESOURCES = [

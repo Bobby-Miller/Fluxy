@@ -1,12 +1,33 @@
 from .alarm import AlarmClientMixin
-from .core import FluxyClient, FluxyError, ScriptRunResult
+from .core import (
+    FluxyClient,
+    FluxyError,
+    FluxyLicenseExpiredError,
+    FluxyTimeoutError,
+    FluxyTransportError,
+    ScriptRunResult,
+)
 from .db import DatabaseConnection, DbClientMixin, QueryResult, QueryRow, QueryRows
 from .device import DeviceClientMixin, DeviceConnection
 from .historian import (
     HistorianAnnotation,
     HistorianBrowseResult,
+    HistorianBrowsePage,
     HistorianClientMixin,
     HistorianMetadata,
+    HistorianPage,
+    HistorianPageCapability,
+    HistorianPath,
+    HistorianPoint,
+    HistorianStream,
+    HistorianStreamBlock,
+    HistorianStreamCapability,
+    HistorianStreamError,
+    HistorianStreamHeader,
+    HistorianStreamPermanentError,
+    HistorianStreamProtocolError,
+    HistorianStreamTerminal,
+    HistorianStreamTransientError,
 )
 from .opc import OpcClientMixin, OpcValue
 from .opcua import OpcUaClientMixin
@@ -39,10 +60,27 @@ __all__ = [
     "ExportTagsResult",
     "FluxyClient",
     "FluxyError",
+    "FluxyLicenseExpiredError",
+    "FluxyTimeoutError",
+    "FluxyTransportError",
     "HistorianAnnotation",
     "HistorianBrowseResult",
+    "HistorianBrowsePage",
     "HistorianClientMixin",
     "HistorianMetadata",
+    "HistorianPage",
+    "HistorianPageCapability",
+    "HistorianPath",
+    "HistorianPoint",
+    "HistorianStream",
+    "HistorianStreamBlock",
+    "HistorianStreamCapability",
+    "HistorianStreamError",
+    "HistorianStreamHeader",
+    "HistorianStreamPermanentError",
+    "HistorianStreamProtocolError",
+    "HistorianStreamTerminal",
+    "HistorianStreamTransientError",
     "ImportResult",
     "IgnitionVersion",
     "MoveResult",

@@ -130,7 +130,8 @@ def check_fluxy_bridge(client: httpx.Client, base_url: str, token: str | None) -
         return CheckResult(
             name="Fluxy WebDev",
             state=CheckState.FAIL,
-            message="Fluxy WebDev rejected the request with HTTP %s. Check FLUXY_TOKEN." % response.status_code,
+            message="Fluxy WebDev rejected the request with HTTP %s. Check FLUXY_TOKEN."
+            % response.status_code,
             manual_url=base_url,
         )
     if response.status_code == 404:
@@ -144,7 +145,8 @@ def check_fluxy_bridge(client: httpx.Client, base_url: str, token: str | None) -
         return CheckResult(
             name="Fluxy WebDev",
             state=CheckState.FAIL,
-            message="Fluxy WebDev returned HTTP %s: %s" % (response.status_code, response.text[:160]),
+            message="Fluxy WebDev returned HTTP %s: %s"
+            % (response.status_code, response.text[:160]),
             manual_url=base_url,
         )
 
@@ -211,8 +213,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Check local Ignition + Fluxy WebDev readiness for development tests."
     )
-    parser.add_argument("--gateway-url", default=os.getenv("IGNITION_GATEWAY_URL", DEFAULT_GATEWAY_URL))
-    parser.add_argument("--fluxy-base-url", default=os.getenv("FLUXY_BASE_URL", DEFAULT_FLUXY_BASE_URL))
+    parser.add_argument(
+        "--gateway-url", default=os.getenv("IGNITION_GATEWAY_URL", DEFAULT_GATEWAY_URL)
+    )
+    parser.add_argument(
+        "--fluxy-base-url", default=os.getenv("FLUXY_BASE_URL", DEFAULT_FLUXY_BASE_URL)
+    )
     parser.add_argument("--token", default=os.getenv("FLUXY_TOKEN"))
     parser.add_argument("--timeout", type=float, default=5.0)
     parser.add_argument(

@@ -4,7 +4,7 @@ from ..common import COMMON
 from ..resource import WebDevResource
 
 
-DATASET_HELPERS = r'''
+DATASET_HELPERS = r"""
 
 
 def _dataset_to_wire(dataset):
@@ -19,10 +19,10 @@ def _dataset_to_wire(dataset):
             row.append(value)
         rows.append(row)
     return {"rows": rows, "columns": column_names}
-'''
+"""
 
 
-HISTORIAN_COMPAT_HELPERS = r'''
+HISTORIAN_COMPAT_HELPERS = r"""
 
 
 def _is_ignition_83_or_newer():
@@ -135,10 +135,13 @@ def _metadata_to_wire(metadata):
         "quality": str(metadata.quality()),
         "properties": _property_set_to_wire(metadata.value()),
     }
-'''
+"""
 
 
-BROWSE_POST = COMMON + HISTORIAN_COMPAT_HELPERS + r'''
+BROWSE_POST = (
+    COMMON
+    + HISTORIAN_COMPAT_HELPERS
+    + r"""
 
 
 def _browse_result_to_wire(result):
@@ -192,10 +195,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "browse failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-STORE_DATA_POINTS_POST = COMMON + HISTORIAN_COMPAT_HELPERS + r'''
+STORE_DATA_POINTS_POST = (
+    COMMON
+    + HISTORIAN_COMPAT_HELPERS
+    + r"""
 
 
 def _dates_from_millis(values):
@@ -232,10 +239,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "storeDataPoints failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-STORE_ANNOTATIONS_POST = COMMON + HISTORIAN_COMPAT_HELPERS + r'''
+STORE_ANNOTATIONS_POST = (
+    COMMON
+    + HISTORIAN_COMPAT_HELPERS
+    + r"""
 
 
 def _dates_or_none_from_millis(values):
@@ -295,10 +306,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "storeAnnotations failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-QUERY_ANNOTATIONS_POST = COMMON + HISTORIAN_COMPAT_HELPERS + r'''
+QUERY_ANNOTATIONS_POST = (
+    COMMON
+    + HISTORIAN_COMPAT_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -350,10 +365,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "queryAnnotations failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-DELETE_ANNOTATIONS_POST = COMMON + HISTORIAN_COMPAT_HELPERS + r'''
+DELETE_ANNOTATIONS_POST = (
+    COMMON
+    + HISTORIAN_COMPAT_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -378,10 +397,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "deleteAnnotations failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-STORE_METADATA_POST = COMMON + HISTORIAN_COMPAT_HELPERS + r'''
+STORE_METADATA_POST = (
+    COMMON
+    + HISTORIAN_COMPAT_HELPERS
+    + r"""
 
 
 def _dates_from_millis(values):
@@ -412,10 +435,14 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "storeMetadata failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-QUERY_METADATA_POST = COMMON + HISTORIAN_COMPAT_HELPERS + r'''
+QUERY_METADATA_POST = (
+    COMMON
+    + HISTORIAN_COMPAT_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -446,10 +473,15 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "queryMetadata failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-QUERY_RAW_POINTS_POST = COMMON + DATASET_HELPERS + HISTORIAN_COMPAT_HELPERS + r'''
+QUERY_RAW_POINTS_POST = (
+    COMMON
+    + DATASET_HELPERS
+    + HISTORIAN_COMPAT_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -495,10 +527,15 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "queryRawPoints failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
-QUERY_AGGREGATED_POINTS_POST = COMMON + DATASET_HELPERS + HISTORIAN_COMPAT_HELPERS + r'''
+QUERY_AGGREGATED_POINTS_POST = (
+    COMMON
+    + DATASET_HELPERS
+    + HISTORIAN_COMPAT_HELPERS
+    + r"""
 
 
 def doPost(request, session):
@@ -554,14 +591,17 @@ def doPost(request, session):
     except Exception, exc:
         _log_error(operation, "queryAggregatedPoints failed", exc)
         return {"json": {"ok": False, "error": str(exc)}, "status": 500}
-'''
+"""
+)
 
 
 RESOURCES = [
     WebDevResource("historian/browse", "browse", BROWSE_POST),
     WebDevResource("historian/storeDataPoints", "storeDataPoints", STORE_DATA_POINTS_POST),
     WebDevResource("historian/queryRawPoints", "queryRawPoints", QUERY_RAW_POINTS_POST),
-    WebDevResource("historian/queryAggregatedPoints", "queryAggregatedPoints", QUERY_AGGREGATED_POINTS_POST),
+    WebDevResource(
+        "historian/queryAggregatedPoints", "queryAggregatedPoints", QUERY_AGGREGATED_POINTS_POST
+    ),
     WebDevResource("historian/storeAnnotations", "storeAnnotations", STORE_ANNOTATIONS_POST),
     WebDevResource("historian/queryAnnotations", "queryAnnotations", QUERY_ANNOTATIONS_POST),
     WebDevResource("historian/deleteAnnotations", "deleteAnnotations", DELETE_ANNOTATIONS_POST),

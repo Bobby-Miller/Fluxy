@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Green Pipe Partners, LLC
+# SPDX-License-Identifier: MPL-2.0
+
+.gradle/
+build/
+gateway/build/
+release/

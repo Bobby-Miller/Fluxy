@@ -304,7 +304,9 @@ def query_result_from_response(response: dict[str, Any]) -> QueryResult:
     else:
         rows = query_rows_from_payload(result)
         response_columns = response.get("columns")
-        columns = query_columns_from_payload(response_columns) if response_columns is not None else None
+        columns = (
+            query_columns_from_payload(response_columns) if response_columns is not None else None
+        )
     source = response.get("resultSource") or response.get("source") or "gateway"
     message = response.get("resultMessage") or response.get("message")
     return QueryResult(

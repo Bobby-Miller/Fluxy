@@ -1,0 +1,48 @@
+name: Verify Fluxy Python
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "scripts/**"
+      - "docs/**"
+      - "*.md"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/python.yml"
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "scripts/**"
+      - "docs/**"
+      - "*.md"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/python.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv python install 3.12
+      - run: uv sync --all-extras --dev
+      - name: Test
+        run: uv run pytest -m "not integration"
+      - name: Lint and type check
+        run: |
+          uv run ruff check src tests scripts/verify_python_distribution.py
+          uv run ty check
+      - name: Build and verify MIT-only distributions
+        run: |
+          uv build
+          uv run python scripts/verify_python_distribution.py

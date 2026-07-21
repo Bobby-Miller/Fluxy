@@ -30,7 +30,9 @@ def target_directory_path(target_directory: str | Path | None = None) -> Path:
     return target
 
 
-def function_resource_path(project_path: str | Path, file_name: str, target_directory: str | Path | None = None) -> Path:
+def function_resource_path(
+    project_path: str | Path, file_name: str, target_directory: str | Path | None = None
+) -> Path:
     project_path = Path(project_path)
     stem = function_stem(file_name)
     return project_path / SCRIPT_ROOT / target_directory_path(target_directory) / stem
@@ -78,7 +80,9 @@ def deploy_builtin_function_file(
     target_directory: str | Path | None = None,
 ) -> Path:
     stem = function_stem(file_name)
-    source = resources.files("fluxy.function_files").joinpath(stem + ".py").read_text(encoding="utf-8")
+    source = (
+        resources.files("fluxy.function_files").joinpath(stem + ".py").read_text(encoding="utf-8")
+    )
     return deploy_function_file(project_path, file_name, source, target_directory=target_directory)
 
 
@@ -103,7 +107,9 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    path = deploy_builtin_function_file(args.project_path, args.file_name, target_directory=args.target_directory)
+    path = deploy_builtin_function_file(
+        args.project_path, args.file_name, target_directory=args.target_directory
+    )
     print("Deployed %s" % path)
 
 

@@ -1,0 +1,3 @@
+{"type":"header","protocolVersion":1,"paths":[{"seriesKey":"a","tagpath":"[default]A"}],"start":1000,"end":2000}
+{"type":"block","sequence":0,"rowCount":2,"columns":{"seriesKey":["a","a"],"tagpath":["[default]A","[default]A"],"timestamp":[1100,1200],"value":[1.5,"ok"],"quality":["Good","Bad_Stale"],"valueType":["number","string"]}}
+{"type":"terminal","sequence":1,"ok":true,"blockCount":1,"pointCount":2}

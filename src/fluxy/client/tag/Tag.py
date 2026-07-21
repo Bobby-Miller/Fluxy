@@ -131,12 +131,15 @@ class BrowseResult:
 
     @classmethod
     def from_payload(cls, payload: dict[str, Any]) -> "BrowseResult":
+        has_children = (
+            payload.get("hasChildren") if "hasChildren" in payload else payload.get("has_children")
+        )
         return cls(
             name=payload.get("name"),
             full_path=payload.get("fullPath") or payload.get("full_path"),
             tag_type=payload.get("tagType") or payload.get("tag_type"),
             data_type=payload.get("dataType") or payload.get("data_type"),
-            has_children=payload.get("hasChildren") or payload.get("has_children"),
+            has_children=has_children,
             payload=payload,
         )
 
@@ -246,7 +249,9 @@ class TagClientMixin:
     @overload
     def delete_tags(self: TagTransport, tag_paths: list[str]) -> list[DeleteResult]: ...
 
-    def delete_tags(self: TagTransport, tag_paths: str | list[str]) -> DeleteResult | list[DeleteResult]:
+    def delete_tags(
+        self: TagTransport, tag_paths: str | list[str]
+    ) -> DeleteResult | list[DeleteResult]:
         single = isinstance(tag_paths, str)
         normalized_paths = [tag_paths] if single else tag_paths
         response = self._post(self.delete_path, {"tagPaths": normalized_paths})
@@ -284,7 +289,11 @@ class TagClientMixin:
         normalized_paths = [tag_paths] if single else tag_paths
         response = self._post(
             self.copy_path,
-            {"tagPaths": normalized_paths, "destinationPath": destination_path, "collisionPolicy": collision_policy},
+            {
+                "tagPaths": normalized_paths,
+                "destinationPath": destination_path,
+                "collisionPolicy": collision_policy,
+            },
         )
         qualities = response.get("qualities")
         if not isinstance(qualities, list):
@@ -334,9 +343,13 @@ class TagClientMixin:
             raise FluxyError("importTags response missing `qualities` list")
         return [ImportResult.from_payload(quality) for quality in qualities]
 
-    def export_tags(self: TagTransport, tag_paths: str | list[str], recursive: bool = True) -> ExportTagsResult:
+    def export_tags(
+        self: TagTransport, tag_paths: str | list[str], recursive: bool = True
+    ) -> ExportTagsResult:
         normalized_paths = [tag_paths] if isinstance(tag_paths, str) else tag_paths
-        response = self._post(self.export_path, {"tagPaths": normalized_paths, "recursive": recursive})
+        response = self._post(
+            self.export_path, {"tagPaths": normalized_paths, "recursive": recursive}
+        )
         if "tags" not in response or not isinstance(response.get("rawJson"), str):
             from fluxy.client import FluxyError
 
@@ -399,7 +412,11 @@ class TagClientMixin:
         path: str,
         tag_filter: dict[str, Any] | None = None,
     ) -> list[str]:
-        return [result.full_path for result in self.browse(path, tag_filter=tag_filter) if result.full_path]
+        return [
+            result.full_path
+            for result in self.browse(path, tag_filter=tag_filter)
+            if result.full_path
+        ]
 
     def query(
         self: TagTransport,
